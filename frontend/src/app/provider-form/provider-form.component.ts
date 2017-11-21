@@ -18,7 +18,8 @@ export class ProviderFormComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    this.providerService.createProvider(this.model).subscribe(provider => this.submitted = false);
+    this.providerService.createProvider(this.model);
+    this.submitted = false;
   }
 
 }

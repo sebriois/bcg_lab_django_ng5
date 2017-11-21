@@ -16,15 +16,12 @@ export class ProvidersComponent implements OnInit {
   constructor(private alertService: AlertService, private providerService: ProviderService) { }
 
   ngOnInit() {
-    this.getProviders();
-  }
-
-  getProviders(): void {
     this.loading = true;
     this.providerService.getProviders().subscribe(providers => {
       this.providers = providers;
       this.providerCount = providers.length;
-      this.loading = false;
     });
+    this.providerService.retrieveProviders();
+    this.loading = false;
   }
 }

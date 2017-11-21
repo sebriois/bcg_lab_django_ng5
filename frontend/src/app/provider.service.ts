@@ -7,21 +7,21 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 
 
 @Injectable()
-export class ProviderService implements OnInit {
+export class ProviderService {
   private _providers: Array<Provider> = [];
   protected _subject: BehaviorSubject<Provider[]> = new BehaviorSubject<Provider[]>([]);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  ngOnInit() {
+  getProviders(): Observable<Provider[]> {
+    return this._subject.asObservable();
+  }
+
+  retrieveProviders() {
     this.http.get<Provider[]>(environment.apiUrl + '/providers/').subscribe(providers => {
       this._providers = providers;
       this._subject.next(this._providers);
     });
-  }
-
-  getProviders(): Observable<Provider[]> {
-    return this._subject.asObservable();
   }
 
   createProvider(provider: Provider) {
