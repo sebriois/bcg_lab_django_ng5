@@ -1,11 +1,16 @@
 <div class="container-fluid h-100">
 <div class="row h-100">
   <div class="col pt-5">
-    <h3>Fournisseurs</h3>
-    <table class="table table-sm">
+
+    <app-alerts></app-alerts>
+
+    <h3 class="page-header">
+      <i class="fa fa-briefcase"></i> Fournisseurs <small>{{ providerCount }}</small>
+    </h3>
+    <h4 [hidden]="!loading"><i class="fa fa-spinner fa-spin"></i> Loading ...</h4>
+    <table class="table table-sm" [hidden]="loading">
       <thead class="thead-dark">
         <tr>
-          <th>#</th>
           <th>Nom</th>
           <th>Responsables</th>
           <th>Revendeur</th>
@@ -14,8 +19,7 @@
         </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let provider of providers; let i = index">
-        <td>{{i}}</td>
+      <tr *ngFor="let provider of providers">
         <td>{{provider.name}}</td>
         <td>{{provider.users_in_charge}}</td>
         <td>{{provider.reseller}}</td>
@@ -38,42 +42,7 @@
     </table>
   </div>
   <div class="col-4 h-100 p-5" style="background: #f1f1f1; border-left: 1px solid #ddd">
-    <form (submit)="createProvider()">
-      <div class="form-group">
-        <label for="name">Nom du fournisseur</label>
-        <input type="text" name="name" id="name" class="form-control" required />
-      </div>
-      <div class="form-group">
-        <label for="users_in_charge">Responsables</label>
-        <input type="text" name="users_in_charge" id="users_in_charge" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label for="reseller">Revendeur</label>
-        <input type="text" name="reseller" id="reseller" class="form-control" />
-      </div>
-      <div class="form-group">
-        <label for="notes">Notes</label>
-        <input type="text" name="notes" id="notes" class="form-control" />
-      </div>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="checkbox" class="form-check-input" name="is_local"> Fournisseur local ?
-        </label>
-      </div>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="checkbox" class="form-check-input" name="is_service"> Type service ?
-        </label>
-      </div>
-      <div class="form-check">
-        <label class="form-check-label">
-          <input type="checkbox" class="form-check-input" name="direct_reception"> Réception automatique ?
-        </label>
-      </div>
-      <button type="submit" class="btn btn-primary">
-        <i class="fa fa-plus"></i> Ajouter
-      </button>
-    </form>
+    <app-provider-form></app-provider-form>
   </div>
 </div>
 </div>

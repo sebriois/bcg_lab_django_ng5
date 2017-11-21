@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+}
+
+small {
+  color: #ccc;
+  font-size: medium;
+}
+
+.page-header {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}

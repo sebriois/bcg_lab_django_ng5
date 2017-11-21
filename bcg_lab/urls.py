@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$', RedirectView.as_view(url='/static/%(path)s', permanent=False)),
-    url(r'^.*$', TemplateView.as_view(template_name="dist/index.html")),
+    url(r'^.*$', TemplateView.as_view(template_name="%s/index.html" % (settings.DEBUG and 'src' or 'dist'))),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

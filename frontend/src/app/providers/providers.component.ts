@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {AlertService} from '../alerts/alerts.service';
+import {Provider} from './providers.model';
+import {ProviderService} from '../provider.service';
 
 @Component({
   selector: 'app-providers',
@@ -7,31 +9,22 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['./providers.component.css']
 })
 export class ProvidersComponent implements OnInit {
-  providersCount: number;
+  providerCount: Number = 0;
   providers: Array<Provider>;
+  loading = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private alertService: AlertService, private providerService: ProviderService) { }
 
   ngOnInit() {
-    this.providersCount = 0;
-    this.http.get<Provider[]>('/api/providers').subscribe(data => {
-      // Read the result field from the JSON response.
-      this.providers = data;
+    this.getProviders();
+  }
+
+  getProviders(): void {
+    this.loading = true;
+    this.providerService.getProviders().subscribe(providers => {
+      this.providers = providers;
+      this.providerCount = providers.length;
+      this.loading = false;
     });
   }
-
-  createProvider() {
-    console.log('create provider');
-  }
-}
-
-interface Provider {
-  id: number;
-  name: string;
-  direct_reception: boolean;
-  is_local: boolean;
-  is_service: boolean;
-  notes: string;
-  reseller: string;
-  users_in_charge: string[];
 }
