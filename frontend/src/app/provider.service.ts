@@ -1,33 +1,36 @@
 import {Injectable, OnInit} from '@angular/core';
 import {environment} from '../environments/environment';
-import {Provider} from './providers/providers.model';
+import {ProviderModel} from './providers/providers.model';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/map';
 
 
 @Injectable()
 export class ProviderService {
-  private _providers: Array<Provider> = [];
-  protected _subject: BehaviorSubject<Provider[]> = new BehaviorSubject<Provider[]>([]);
+  private baseUrl: string = environment.apiUrl + '/providers/';
+  private _providers: Array<ProviderModel> = [];
+  protected _subject: BehaviorSubject<ProviderModel[]> = new BehaviorSubject<ProviderModel[]>([]);
 
   constructor(private http: HttpClient) {}
 
-  getProviders(): Observable<Provider[]> {
+  getProviders(): Observable<ProviderModel[]> {
     return this._subject.asObservable();
   }
 
-  retrieveProviders() {
-    this.http.get<Provider[]>(environment.apiUrl + '/providers/').subscribe(providers => {
-      this._providers = providers;
+  retrieveProviders(): Observable<any> {
+    return this.http.get<ProviderModel[]>(this.baseUrl).map(response => {
+      this._providers = response['results'];
       this._subject.next(this._providers);
     });
   }
 
-  createProvider(provider: Provider) {
-    this.http.post<Provider>(environment.apiUrl + '/providers/', provider).subscribe(provider => {
-      this._providers.push(provider);
+  createProvider(provider: ProviderModel): Observable<any> {
+    return this.http.post<ProviderModel>(this.baseUrl, provider).map(createdProvider => {
+      this._providers.push(createdProvider);
       this._subject.next(this._providers);
+      return createdProvider;
     });
   }
 }

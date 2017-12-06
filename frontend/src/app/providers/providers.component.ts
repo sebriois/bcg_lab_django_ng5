@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AlertService} from '../alerts/alerts.service';
-import {Provider} from './providers.model';
+import {ProviderModel} from './providers.model';
 import {ProviderService} from '../provider.service';
 
 @Component({
@@ -10,7 +10,7 @@ import {ProviderService} from '../provider.service';
 })
 export class ProvidersComponent implements OnInit {
   providerCount: Number = 0;
-  providers: Array<Provider>;
+  providers: Array<ProviderModel>;
   loading = false;
 
   constructor(private alertService: AlertService, private providerService: ProviderService) { }
@@ -21,7 +21,8 @@ export class ProvidersComponent implements OnInit {
       this.providers = providers;
       this.providerCount = providers.length;
     });
-    this.providerService.retrieveProviders();
-    this.loading = false;
+    this.providerService.retrieveProviders().subscribe(providers => {
+      this.loading = false;
+    });
   }
 }

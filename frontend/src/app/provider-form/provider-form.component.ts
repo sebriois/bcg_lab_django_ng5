@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Provider} from '../providers/providers.model';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ProviderModel} from '../providers/providers.model';
 import {ProviderService} from '../provider.service';
+import {AlertService} from '../alerts/alerts.service';
 
 @Component({
   selector: 'app-provider-form',
@@ -8,18 +10,37 @@ import {ProviderService} from '../provider.service';
   styleUrls: ['./provider-form.component.css']
 })
 export class ProviderFormComponent implements OnInit {
-  model: Provider = new Provider();
+  provider: ProviderModel = new ProviderModel();
+  providerForm: FormGroup;
   submitted = false;
 
-  constructor(private providerService: ProviderService) { }
+
+  constructor(private providerService: ProviderService, private formBuilder: FormBuilder, private alertService: AlertService) {
+    this.createForm();
+  }
 
   ngOnInit() {
+
+  }
+
+  createForm() {
+    this.providerForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+    });
   }
 
   onSubmit() {
     this.submitted = true;
-    this.providerService.createProvider(this.model);
-    this.submitted = false;
+    this.providerService.createProvider(this.provider).subscribe(
+      provider => {
+        this.submitted = false;
+        this.alertService.success(provider.name + ' ajouté avec succès.');
+        this.providerForm.reset();
+      },
+      error => {
+        this.alertService.error((error.message) ? error.message : 'Erreur de création du fournisseur');
+      }
+    );
   }
 
 }

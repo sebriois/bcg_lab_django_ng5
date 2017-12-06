@@ -4,9 +4,17 @@
 
     <app-alerts></app-alerts>
 
-    <h3 class="page-header">
-      <i class="fa fa-briefcase"></i> Fournisseurs <small>{{ providerCount }}</small>
-    </h3>
+    <div class="page-header">
+        <h3>
+            <i class="fa fa-briefcase"></i> Fournisseurs <small>{{ providerCount }}</small>
+        </h3>
+        <button (click)="showRightPanelForm = !showRightPanelForm" class="pull-right">
+            <i class="fa fa-plus"></i> ajouter un fournisseur
+        </button>
+        <button (click)="showTopPanelForm = !showTopPanelForm" class="d-md-none d-lg-none pull-right">
+            <i class="fa fa-plus"></i> ajouter un fournisseur
+        </button>
+    </div>
     <h4 [hidden]="!loading"><i class="fa fa-spinner fa-spin"></i> Loading ...</h4>
     <table class="table table-sm" [hidden]="loading">
       <thead class="thead-dark">
@@ -41,7 +49,7 @@
       </tbody>
     </table>
   </div>
-  <div class="col-4 h-100 p-5" style="background: #f1f1f1; border-left: 1px solid #ddd">
+  <div class="col-4 h-100 p-5" style="background: #f1f1f1; border-left: 1px solid #ddd" *ngIf="showRightPanelForm">
     <app-provider-form></app-provider-form>
   </div>
 </div>

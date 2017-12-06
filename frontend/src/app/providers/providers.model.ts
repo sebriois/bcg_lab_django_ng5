@@ -1,4 +1,4 @@
-export class Provider {
+export class ProviderModel {
     id: number;
     name: string;
     direct_reception: boolean;

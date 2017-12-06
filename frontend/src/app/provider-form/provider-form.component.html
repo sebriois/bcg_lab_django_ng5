@@ -1,8 +1,8 @@
 <div [hidden]="submitted">
-  <form (ngSubmit)="onSubmit()" #providerForm="ngForm">
+  <form (ngSubmit)="onSubmit()" [formGroup]="providerForm" novalidate>
     <div class="form-group">
       <label for="name">Nom du fournisseur</label>
-      <input type="text" name="name" id="name" class="form-control" required [(ngModel)]="model.name">
+      <input type="text" name="name" id="name" class="form-control" formControlName="name">
     </div>
     <div class="form-group">
       <label for="users_in_charge">Responsables</label>

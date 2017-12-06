@@ -22,10 +22,12 @@ from django.contrib.staticfiles.views import serve
 from rest_framework.routers import DefaultRouter
 
 from provider import views as provider_views
+from product import views as product_views
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r'providers', provider_views.ProviderViewSet)
+router.register(r'products', product_views.ProductViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browsable API.
