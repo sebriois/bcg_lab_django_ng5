@@ -22,8 +22,8 @@ class Team(models.Model):
 
 
 class TeamMember(models.Model):
-    team = models.ForeignKey(Team, verbose_name="Equipe", null=True, blank=True)
-    user = models.ForeignKey(User, verbose_name="Utilisateur")
+    team = models.ForeignKey(Team, verbose_name="Equipe", null=True, blank=True, on_delete = models.SET_NULL)
+    user = models.ForeignKey(User, verbose_name="Utilisateur", on_delete = models.CASCADE)
     member_type = models.IntegerField(u"Type d'utilisateur", default=0)
 
     send_on_validation = models.BooleanField(u"Email quand commande validée ?", default=False)
@@ -47,12 +47,14 @@ class TeamMember(models.Model):
         return self.user.username
 
 
-class TeamNameSynonyms(models.Model):
-    team = models.ForeignKey(Team, verbose_name="Equipe")
-    name = models.CharField(u"Nom d'équipe", max_length=100)
+class TeamNameHistory(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    name = models.CharField(u"Nom", max_length = 100)
+    fullname = models.CharField(u"Nom", max_length = 100)
 
     class Meta:
-        db_table = "team_name_synonym"
-        verbose_name = "Nom d'équipe (synonymes)"
-        verbose_name_plural = "Noms d'équipe (synonymes)"
-        ordering = ('team',)
+        db_table = 'team_name_history'
+        verbose_name = "Historique nom d'équipe"
+        verbose_name_plural = "Historique nom d'équipe"
+        ordering = ('team', 'name')
+

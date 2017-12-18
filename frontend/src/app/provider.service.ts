@@ -9,27 +9,39 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ProviderService {
-  private baseUrl: string = environment.apiUrl + '/providers/';
-  private _providers: Array<ProviderModel> = [];
-  protected _subject: BehaviorSubject<ProviderModel[]> = new BehaviorSubject<ProviderModel[]>([]);
-
   constructor(private http: HttpClient) {}
 
+  private baseUrl: string = environment.apiUrl + '/providers/';
+  public pagination = {
+    totalItems: 0,
+    itemsPerPage: 50,
+    currentPage: 1,
+    nextPage: null,
+    prevPage: null
+  };
+  private _providers: Array<ProviderModel> = [];
+
+  protected _providersSubject: BehaviorSubject<ProviderModel[]> = new BehaviorSubject<ProviderModel[]>([]);
+
   getProviders(): Observable<ProviderModel[]> {
-    return this._subject.asObservable();
+    return this._providersSubject.asObservable();
   }
 
-  retrieveProviders(): Observable<any> {
-    return this.http.get<ProviderModel[]>(this.baseUrl).map(response => {
+  retrieveProviders(page: number): Observable<any> {
+    return this.http.get<ProviderModel[]>(this.baseUrl + '?page=' + page).map(response => {
       this._providers = response['results'];
-      this._subject.next(this._providers);
+
+      this.pagination.totalItems = response['count'];
+      this.pagination.currentPage = page;
+      this.pagination.nextPage = response['next'];
+      this.pagination.prevPage = response['previous'];
+
+      this._providersSubject.next(this._providers);
     });
   }
 
   createProvider(provider: ProviderModel): Observable<any> {
     return this.http.post<ProviderModel>(this.baseUrl, provider).map(createdProvider => {
-      this._providers.push(createdProvider);
-      this._subject.next(this._providers);
       return createdProvider;
     });
   }

@@ -42,6 +42,12 @@ INSTALLED_APPS = [
     'attachments',
     'product',
     'provider',
+    'team',
+    'budget',
+    'order',
+    'history',
+    'infos',
+    'issues',
     'utils',
 ]
 
@@ -110,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
 TIME_ZONE = 'UTC'
 
@@ -132,8 +138,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 10,
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
+    'PAGE_SIZE': 50,
+    'DEFAULT_PAGINATION_CLASS': 'bcg_lab.pagination.CustomPagination'
 }
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (

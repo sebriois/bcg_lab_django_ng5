@@ -4,22 +4,33 @@
 
     <app-alerts></app-alerts>
 
+    <button (click)="showRightPanelForm = !showRightPanelForm" class="pull-right">
+      <i class="fa fa-plus"></i> ajouter un fournisseur
+    </button>
+
     <div class="page-header">
         <h3>
-            <i class="fa fa-briefcase"></i> Fournisseurs <small>{{ providerCount }}</small>
+            <i class="fa fa-briefcase"></i> Fournisseurs <small>{{ pagination.totalItems }}</small>
         </h3>
-        <button (click)="showRightPanelForm = !showRightPanelForm" class="pull-right">
-            <i class="fa fa-plus"></i> ajouter un fournisseur
-        </button>
-        <button (click)="showTopPanelForm = !showTopPanelForm" class="d-md-none d-lg-none pull-right">
-            <i class="fa fa-plus"></i> ajouter un fournisseur
-        </button>
     </div>
     <h4 [hidden]="!loading"><i class="fa fa-spinner fa-spin"></i> Loading ...</h4>
-    <table class="table table-sm" [hidden]="loading">
-      <thead class="thead-dark">
+
+    <nav [hidden]="loading">
+      <pagination class="pagination-sm justify-content-center"
+                  previousText="&lsaquo;" nextText="&rsaquo;"
+                  [itemsPerPage]="pagination.itemsPerPage"
+                  [totalItems]="pagination.totalItems"
+                  [(ngModel)]="pagination.currentPage"
+                  (pageChanged)="getPage($event)"
+                  [maxSize]="5"
+                  [boundaryLinks]="false"
+      ></pagination>
+    </nav>
+
+    <table class="table table-responsive table-condensed table-bordered table-striped" [hidden]="loading">
+      <thead class="">
         <tr>
-          <th>Nom</th>
+          <th>Fournisseur</th>
           <th>Responsables</th>
           <th>Revendeur</th>
           <th>Notes</th>
@@ -27,12 +38,12 @@
         </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let provider of providers">
-        <td>{{provider.name}}</td>
-        <td>{{provider.users_in_charge}}</td>
-        <td>{{provider.reseller}}</td>
-        <td>{{provider.notes}}</td>
-        <td>
+      <tr *ngFor="let provider of providers | async">
+        <td class="align-middle">{{provider.name}}</td>
+        <td class="align-middle">{{provider.users_in_charge}}</td>
+        <td class="align-middle">{{provider.reseller}}</td>
+        <td class="align-middle" style="white-space: pre-line">{{provider.notes}}</td>
+        <td class="align-middle">
           <div class="btn-group btn-sm">
             <button class="btn btn-success btn-sm">
               <i class="fa fa-download"></i> importer produits
@@ -48,6 +59,18 @@
       </tr>
       </tbody>
     </table>
+
+    <nav [hidden]="loading">
+      <pagination class="pagination-sm justify-content-center"
+                  previousText="&lsaquo;" nextText="&rsaquo;"
+                  [itemsPerPage]="pagination.itemsPerPage"
+                  [totalItems]="pagination.totalItems"
+                  [(ngModel)]="pagination.currentPage"
+                  (pageChanged)="getPage($event)"
+                  [maxSize]="5"
+                  [boundaryLinks]="false"
+      ></pagination>
+    </nav>
   </div>
   <div class="col-4 h-100 p-5" style="background: #f1f1f1; border-left: 1px solid #ddd" *ngIf="showRightPanelForm">
     <app-provider-form></app-provider-form>

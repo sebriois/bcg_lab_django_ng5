@@ -1,3 +1,26 @@
-<p>
-  orders works!
-</p>
+
+<h4 class="pt-3" [hidden]="!loading"><i class="fa fa-spinner fa-spin"></i> Loading ...</h4>
+
+<div class="container-fluid" [hidden]="loading">
+<div class="row h-100">
+  <div id="sidebar" class="col-sm-3 col-md-2 p-0">
+    <ul class="list-unstyled">
+      <li>
+        <a routerLink="cart" routerLinkActive="active" class="d-block p-2 pr-5">
+          <i class="fa fa-fw fa-shopping-cart"></i> Panier
+          <span class="badge badge-pill badge-primary">{{(orders | async | statusFilter: 0).length }}</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="validation" routerLinkActive="active" class="d-block p-2 pr-5">
+          <i class="fa fa-fw fa-check"></i> En cours de validation
+          <span class="badge badge-pill badge-primary">{{(orders | async | statusFilter: 1).length }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="col pl-3 pt-3">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+</div>

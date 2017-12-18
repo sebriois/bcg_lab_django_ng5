@@ -21,7 +21,7 @@ class ProductType(models.Model):
 
 
 class ProductSubType(models.Model):
-    category = models.ForeignKey(ProductType, verbose_name="Type")
+    category = models.ForeignKey(ProductType, verbose_name="Type", on_delete = models.CASCADE)
     name = models.CharField(u"Sous-type", max_length=200)
 
     class Meta:
@@ -47,7 +47,7 @@ class ProductCode(models.Model):
 
 
 class Product(models.Model):
-    provider = models.ForeignKey(Provider, verbose_name='Fournisseur')
+    provider = models.ForeignKey(Provider, verbose_name='Fournisseur', on_delete = models.CASCADE)
     origin = models.CharField(u"Fournisseur d'origine", max_length=100, null=True, blank=True)
     name = models.CharField(u'Désignation', max_length=500)
     packaging = models.CharField(u'Conditionnement', blank=True, null=True, max_length=100)
@@ -55,8 +55,8 @@ class Product(models.Model):
     price = models.DecimalField(u'Prix', max_digits=12, decimal_places=2)
     offer_nb = models.CharField(u'N° Offre', blank=True, null=True, max_length=100)
     nomenclature = models.CharField(u'Nomenclature', blank=True, null=True, max_length=100)
-    category = models.ForeignKey(ProductType, verbose_name="Type", blank=True, null=True)
-    sub_category = models.ForeignKey(ProductSubType, verbose_name="Sous-type", blank=True, null=True)
+    category = models.ForeignKey(ProductType, verbose_name="Type", blank=True, null=True, on_delete = models.SET_NULL)
+    sub_category = models.ForeignKey(ProductSubType, verbose_name="Sous-type", blank=True, null=True, on_delete = models.SET_NULL)
     expiry = models.DateTimeField(
         u"Date d'expiration",
         help_text = u"Format jj/mm/aaaa",

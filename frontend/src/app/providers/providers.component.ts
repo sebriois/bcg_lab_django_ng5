@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {AlertService} from '../alerts/alerts.service';
-import {ProviderModel} from './providers.model';
 import {ProviderService} from '../provider.service';
 
 @Component({
@@ -8,20 +7,24 @@ import {ProviderService} from '../provider.service';
   templateUrl: './providers.component.html',
   styleUrls: ['./providers.component.css']
 })
-export class ProvidersComponent implements OnInit {
-  providerCount: Number = 0;
-  providers: Array<ProviderModel>;
-  loading = false;
 
+export class ProvidersComponent implements OnInit {
   constructor(private alertService: AlertService, private providerService: ProviderService) { }
+
+  providers = this.providerService.getProviders();
+  pagination = this.providerService.pagination;
+  loading = false;
 
   ngOnInit() {
     this.loading = true;
-    this.providerService.getProviders().subscribe(providers => {
-      this.providers = providers;
-      this.providerCount = providers.length;
+    this.providerService.retrieveProviders(this.pagination.currentPage).subscribe(response => {
+      this.loading = false;
     });
-    this.providerService.retrieveProviders().subscribe(providers => {
+  }
+
+  getPage(event: any): void {
+    this.loading = true;
+    this.providerService.retrieveProviders(event.page).subscribe(response => {
       this.loading = false;
     });
   }

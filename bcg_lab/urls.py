@@ -13,29 +13,31 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
+from django.urls import path, include
 from django.views.generic import TemplateView, RedirectView
-from django.contrib.staticfiles.views import serve
 from rest_framework.routers import DefaultRouter
 
 from provider import views as provider_views
 from product import views as product_views
+from order import views as order_views
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r'providers', provider_views.ProviderViewSet)
 router.register(r'products', product_views.ProductViewSet)
+router.register(r'orders', order_views.OrderViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browsable API.
 urlpatterns = [
-    url(r'^api/', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$', RedirectView.as_view(url='/static/%(path)s', permanent=False)),
-    url(r'^.*$', TemplateView.as_view(template_name="%s/index.html" % (settings.DEBUG and 'src' or 'dist'))),
+    path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$', RedirectView.as_view(url='/static/%(path)s', permanent=False)),
+    path('', TemplateView.as_view(template_name="%s/index.html" % (settings.DEBUG and 'src' or 'dist'))),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
