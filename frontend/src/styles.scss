@@ -1,0 +1,32 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'variables';
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+html, body {
+  height: 100%;
+}
+
+small {
+  color: #ccc;
+  font-size: medium;
+}
+.flex-grow {
+  flex: 1 0 auto;
+}
+.tiny {
+  width: 40px;
+}
+.page-header {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+#sidebar {
+  background-color: $gray-100;
+  border-right: 1px solid $gray-300;
+  ul > li > a:hover, ul > li a.active {
+    background-color: $gray-200;
+    text-decoration: none;
+  }
+}

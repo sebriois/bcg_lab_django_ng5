@@ -1,0 +1,43 @@
+<table class="table table-striped table-sm">
+  <thead>
+  <tr>
+    <th>Utilisateur</th>
+    <th>Désignation</th>
+    <th>Conditionnement</th>
+    <th>Référence</th>
+    <th>N°Offre</th>
+    <th>Nomenclature</th>
+    <th>Prix unitaire</th>
+    <th>Quantité</th>
+    <th>Prix total</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of order.items">
+    <td class="align-middle">{{ item.username }}</td>
+    <td class="align-middle">{{ item.name }}</td>
+    <td class="align-middle">{{ item.packaging }}</td>
+    <td class="align-middle">{{ item.reference }}</td>
+    <td class="align-middle">{{ item.offer_nb }}</td>
+    <td class="align-middle">{{ item.nomenclature }}</td>
+    <td class="align-middle">{{ item.price | currency:'EUR' }}</td>
+    <td class="align-middle">
+      <input type="text" [(ngModel)]="item.quantity" class="form-control form-control-sm tiny" />
+    </td>
+    <td class="align-middle">{{ (item.price * item.quantity) | currency:'EUR' }}</td>
+    <td class="align-middle">
+      <div class="btn-group">
+        <button class="btn btn-primary btn-sm">
+          <i class="fa fa-edit"></i> modifier
+        </button>
+        <button class="btn btn-danger btn-sm">
+          <i class="fa fa-trash"></i> supprimer
+        </button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<p>PRIX TOTAL COMMANDE: {{ getTotalPrice() | currency:'EUR' }}</p>

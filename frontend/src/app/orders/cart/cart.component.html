@@ -1,0 +1,52 @@
+
+<h3 class="page-header">
+  <i class="fa fa-shopping-cart"></i> Panier <small>{{ totalItems }}</small>
+</h3>
+
+<app-alerts></app-alerts>
+
+<div *ngFor="let order of orders | async | statusFilter:0" class="mb-3">
+  <div class="card">
+    <div class="card-header bg-primary text-light">
+      {{ order.provider }}
+    </div>
+    <div class="card-body">
+      <div class="row mb-2">
+        <div class="col-sm-3">
+          <p class="page-header">Infos:</p>
+
+        </div>
+        <div class="col-sm-4">
+          <p class="page-header">Pièces jointes:</p>
+        </div>
+        <div class="col-sm-5">
+          <p class="page-header">Commentaires:</p>
+          <div class="btn-group" data-toggle="buttons">
+            <label class="btn btn-warning btn-sm text-left active">
+              <input type="checkbox" autocomplete="off"> <i class="fa fa-warning"></i> Problème
+            </label>
+            <label class="btn btn-danger btn-sm text-left">
+              <input type="checkbox" autocomplete="off"> <i class="fa fa-flash"></i> Commande urgente
+            </label>
+          </div>
+          <textarea [(ngModel)]="order.notes" class="form-control form-control-sm"></textarea>
+          <div class="btn-group pull-right">
+            <button class="btn btn-success btn-sm text-light"><i class="fa fa-comment"></i> Ajouter</button>
+          </div>
+        </div>
+      </div>
+      <app-order-detail [order]="order"></app-order-detail>
+      <div class="btn-group">
+        <button class="btn btn-success btn-sm">
+          <i class="fa fa-check"></i> Commander
+        </button>
+        <button class="btn btn-danger btn-sm">
+          <i class="fa fa-trash"></i> Supprimer
+        </button>
+      </div>
+    </div>
+    <div class="card-footer text-muted">
+      Date de création: {{ order.date_created | date:"d/M/y" }}, dernière modification: {{ order.last_change_human }}
+    </div>
+  </div>
+</div>
