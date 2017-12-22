@@ -1,15 +1,62 @@
 @import url('https://fonts.googleapis.com/css?family=PT+Sans');
 $font-family-sans-serif: 'PT Sans', sans-serif;
 
-$brown: #5f431f;
-
-$colors: (
-  "brown": $brown
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 800px,
+  lg: 1050px,
+  xl: 1600px
 );
 
-//$primary: #17a2b8;
-$primary: #2278CF;
+/* Coolors Exported Palette - coolors.co/f7f0f5-decbb7-8f857d-5c5552-433633 */
+
+/* RGB */
+$color5: #EAEAEA;
+$color4: rgba(222, 203, 183, 1);
+$color3: #14080E;
+$color2: #1B263B;
+
+
+$color1: #433633;
+$color2: #2E5EAA;
+$color3: rgba(30, 32, 25, 1);
+$color4: #D95D39;
+$color5: #80BC53;
+$color6: #BAB5B4;
+
+$enable-gradients: true;
 
 $theme-colors: (
-  "brown": $brown
+  "color1": $color1,
+  "color2": $color2,
+  "color3": $color3,
+  "color4": $color4,
+  "color5": $color5,
+  "color6": $color6,
 );
+
+//$color1: rgba(79, 124, 172, 1);
+//$color2: rgba(226, 239, 222, 1);
+//$color3: rgba(152, 193, 217, 1);
+//$color4: rgba(187, 68, 48, 1);
+//$color5: rgba(30, 32, 25, 1);
+
+//$primary: #17a2b8;
+//$primary: #2278CF;
+$primary: $color2;
+
+$input-group-addon-border-color: $color1;
+
+$body-color: $color3;
+$link-color: $color1;
+
+$table-dark-bg: $color5;
+$table-dark-color: white;
+$table-dark-accent-bg: rgba($color5, .05);
+$table-dark-hover-bg: rgba($color5, .075);
+$table-dark-border-color: lighten($color5, 7.5%);
+$table-dark-color: white;
+
+$pagination-active-bg: $color1;
+$pagination-active-border-color: $color1;

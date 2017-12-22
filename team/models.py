@@ -13,7 +13,7 @@ class Team(models.Model):
         verbose_name_plural = u'Equipes'
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s" % (self.fullname and self.fullname or self.name)
 
     @property

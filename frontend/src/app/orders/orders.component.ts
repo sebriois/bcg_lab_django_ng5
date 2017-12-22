@@ -23,4 +23,7 @@ export class OrdersComponent implements OnInit {
     });
   }
 
+  viewCart() {
+    this.orders.filter()
+  }
 }

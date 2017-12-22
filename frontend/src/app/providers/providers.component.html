@@ -4,13 +4,13 @@
 
     <app-alerts></app-alerts>
 
-    <button (click)="showRightPanelForm = !showRightPanelForm" class="pull-right">
+    <button (click)="showRightPanelForm = !showRightPanelForm" class="btn btn-primary pull-right">
       <i class="fa fa-plus"></i> ajouter un fournisseur
     </button>
 
     <div class="page-header">
-        <h3>
-            <i class="fa fa-briefcase"></i> Fournisseurs <small>{{ pagination.totalItems }}</small>
+        <h3 class="text-color4">
+            <i class="fa fa-briefcase"></i> Gestion des fournisseurs <small>{{ pagination.totalItems }}</small>
         </h3>
     </div>
     <h4 [hidden]="!loading"><i class="fa fa-spinner fa-spin"></i> Loading ...</h4>
@@ -27,8 +27,8 @@
       ></pagination>
     </nav>
 
-    <table class="table table-responsive table-condensed table-bordered table-striped" [hidden]="loading">
-      <thead class="">
+    <table class="table table-bordered table-condensed table-striped" [hidden]="loading">
+      <thead class="table-dark bg-gradient-color5">
         <tr>
           <th>Fournisseur</th>
           <th>Responsables</th>
@@ -52,7 +52,7 @@
               <i class="fa fa-edit"></i> éditer
             </button>
             <button class="btn btn-danger btn-sm">
-              <i class="fa fa-close"></i> supprimer
+              <i class="fa fa-trash"></i> supprimer
             </button>
           </div>
         </td>

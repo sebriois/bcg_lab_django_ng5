@@ -30,3 +30,7 @@ small {
     text-decoration: none;
   }
 }
+
+#sidebar a {
+  border-bottom: 1px solid $gray-300;
+}

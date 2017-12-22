@@ -5,7 +5,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
-
+import {TooltipModule} from 'ngx-bootstrap/tooltip';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -46,6 +46,7 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
   imports: [
     ModalModule.forRoot(),
     PaginationModule.forRoot(),
+    TooltipModule.forRoot(),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

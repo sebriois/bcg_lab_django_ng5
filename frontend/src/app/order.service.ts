@@ -21,7 +21,7 @@ export class OrderService {
 
   retrieveOrders(): Observable<any> {
     return this.http.get<OrderModel[]>(this.baseUrl).map(orders => {
-      console.log("Retrieving orders");
+      console.log('Retrieving orders');
       this._orders = orders;
       this._ordersSubject.next(this._orders);
     });

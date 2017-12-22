@@ -4,17 +4,31 @@
 
     <app-alerts></app-alerts>
 
-    <div class="page-header">
+    <div class="page-header text-color4">
         <h3>
-            <i class="fa fa-flask"></i> Produits <small>{{ pagination.totalItems }}</small>
+            <i class="fa fa-flask"></i> Gestion des produits <small>{{ pagination.totalItems }}</small>
         </h3>
     </div>
     <h4 [hidden]="!loading"><i class="fa fa-spinner fa-spin"></i> Loading ...</h4>
 
-    <div class="input-group w-25" [hidden]="loading">
+    <div class="input-group w-25">
       <input type="text" class="form-control" placeholder="Fournisseur, produit, référence, ..." [(ngModel)]="searchText">
-      <span class="input-group-addon bg-primary text-white" id="basic-addon2" (click)="searchProducts()">
-        <i class="fa fa-search"></i>
+      <span class="input-group-btn">
+        <button class="btn btn-primary"
+                tooltip="Recherche rapide"
+                placement="top"
+                (click)="searchProducts()"
+        >
+          <i class="fa fa-search"></i>
+        </button>
+      </span>
+      <span class="input-group-btn">
+        <button class="btn btn-primary"
+                tooltip="Recherche avancée"
+                placement="top"
+                (click)="openAdvancedSearchForm()">
+          <i class="fa fa-ellipsis-h"></i>
+        </button>
       </span>
     </div>
 
@@ -32,7 +46,7 @@
     </nav>
 
     <table class="table table-condensed table-bordered table-striped w-100" [hidden]="loading">
-      <thead class="">
+      <thead class="table-dark bg-gradient-color5">
         <tr>
             <th class="align-middle">Fournisseur</th>
             <th class="align-middle">Produit</th>
@@ -48,16 +62,16 @@
       </thead>
       <tbody>
       <tr *ngFor="let product of products | async">
-        <td class="align-middle">{{ product.provider }}</td>
-        <td class="align-middle">{{ product.name }}</td>
-        <td class="align-middle">{{ product.packaging }}</td>
-        <td class="align-middle">{{ product.reference }}</td>
-        <td class="align-middle">{{ product.price }}&nbsp;€</td>
-        <td class="align-middle">{{ product.offer_nb }}</td>
-        <td class="align-middle">{{ product.expiry|date }}</td>
-        <td class="align-middle">{{ product.nomenclature }}</td>
-        <td class="align-middle">{{ product.last_change|date }}</td>
-        <td class="align-middle">
+        <td class="align-middle p-1">{{ product.provider }}</td>
+        <td class="align-middle p-1">{{ product.name }}</td>
+        <td class="align-middle p-1">{{ product.packaging }}</td>
+        <td class="align-middle p-1">{{ product.reference }}</td>
+        <td class="align-middle p-1">{{ product.price }}&nbsp;€</td>
+        <td class="align-middle p-1">{{ product.offer_nb }}</td>
+        <td class="align-middle p-1">{{ product.expiry|date }}</td>
+        <td class="align-middle p-1">{{ product.nomenclature }}</td>
+        <td class="align-middle p-1">{{ product.last_change|date }}</td>
+        <td class="align-middle p-1">
           <div class="btn-group btn-sm">
             <button class="btn btn-success btn-sm">
               <i class="fa fa-cart-plus"></i>

@@ -8,9 +8,9 @@ export class OrderModel {
   status_display: string;
   items: Array<OrderItemModel>;
   notes: string;
-  is_confidential: string;
-  is_urgent: string;
-  has_problem: string;
+  is_confidential: boolean;
+  is_urgent: boolean;
+  has_problem: boolean;
   date_created: Date;
   date_delivered: Date;
   last_change: Date;
@@ -35,5 +35,5 @@ export class OrderItemModel {
   cost_type: string;
   quantity: number;
   delivered: string;
-  is_confidential: string;
+  is_confidential: boolean;
 }
