@@ -7,24 +7,33 @@ import {ModalModule} from 'ngx-bootstrap/modal';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { ProvidersComponent } from './providers/providers.component';
-import { OrdersComponent } from './orders/orders.component';
-import { ProductsComponent } from './products/products.component';
-import { BudgetsComponent } from './budgets/budgets.component';
-import { HistoryComponent } from './history/history.component';
-import { AlertsComponent } from './alerts/alerts.component';
-import { AlertService } from './alerts/alerts.service';
-import { ProviderFormComponent } from './provider-form/provider-form.component';
-import { ProviderService } from './provider.service';
-import { ProductService } from './product.service';
-import { OrderService } from './order.service';
-import { CartComponent } from './orders/cart/cart.component';
-import { ValidationComponent } from './orders/validation/validation.component';
-import { StatusFilterPipe } from './orders/orders.pipe';
-import { OrderItemComponent } from './orders/order-item/order-item.component';
-import { OrderDetailComponent } from './order-detail/order-detail.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {ProvidersComponent} from './providers/providers.component';
+import {OrdersComponent} from './orders/orders.component';
+import {ProductsComponent} from './products/products.component';
+import {BudgetsComponent} from './budgets/budgets.component';
+import {HistoryComponent} from './history/history.component';
+import {AlertsComponent} from './alerts/alerts.component';
+import {StatusFilterPipe} from './orders/orders.pipe';
+import {OrderItemComponent} from './orders/order-item/order-item.component';
+import {OrderDetailComponent} from './order-detail/order-detail.component';
+import {CartComponent} from './orders/cart/cart.component';
+import {ValidationComponent} from './orders/validation/validation.component';
+import {ProviderFormComponent} from './provider-form/provider-form.component';
+import {TeamsComponent} from './teams/teams.component';
+
+import {AlertService} from './alerts/alerts.service';
+import {ProviderService} from './provider.service';
+import {ProductService} from './product.service';
+import {OrderService} from './order.service';
+import {UserService} from "./user.service";
+import {TeamsService} from "./teams.service";
+import { LoginComponent } from './login/login.component';
+import {AuthService} from "./auth.service";
+import {AuthGuard} from "./auth.guard";
+import { HomeComponent } from './home/home.component';
+import {CookieXSRFStrategy, XSRFStrategy} from "@angular/http";
 
 
 @NgModule({
@@ -41,8 +50,12 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
     ValidationComponent,
     StatusFilterPipe,
     OrderItemComponent,
-    OrderDetailComponent
+    OrderDetailComponent,
+    TeamsComponent,
+    LoginComponent,
+    HomeComponent
   ],
+  entryComponents: [ProviderFormComponent],
   imports: [
     ModalModule.forRoot(),
     PaginationModule.forRoot(),
@@ -55,10 +68,18 @@ import { OrderDetailComponent } from './order-detail/order-detail.component';
     HttpClientModule,
   ],
   providers: [
+    AuthService,
+    AuthGuard,
     AlertService,
     ProviderService,
     ProductService,
-    OrderService
+    OrderService,
+    UserService,
+    TeamsService,
+    {
+        provide: XSRFStrategy,
+        useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken')
+    }
   ],
   bootstrap: [AppComponent]
 })

@@ -18,6 +18,7 @@ class Budget(models.Model):
     is_active = models.BooleanField(u"Actif?", default = True)
 
     class Meta:
+        db_table = 'budget'
         verbose_name = "Budget"
         verbose_name_plural = "Budgets"
         ordering = ("team", "name")

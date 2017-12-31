@@ -5,27 +5,57 @@ import {ProductsComponent} from './products/products.component';
 import {OrdersComponent} from './orders/orders.component';
 import {CartComponent} from './orders/cart/cart.component';
 import {ValidationComponent} from './orders/validation/validation.component';
+import {TeamsComponent} from "./teams/teams.component";
+import {AuthGuard} from "./auth.guard";
+import {LoginComponent} from "./login/login.component";
+import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
   {
+    path: '',
+    component: HomeComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  {
     path: 'providers',
-    component: ProvidersComponent
+    component: ProvidersComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'products',
     component: ProductsComponent,
     data: {
       'title': 'Produits'
-    }
+    },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'teams',
+    component: TeamsComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'orders',
     component: OrdersComponent,
+    canActivate: [AuthGuard],
     // outlet: 'orders',
     // canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
-      {path: 'cart', component: CartComponent, data: {'title': 'Panier'}},
-      {path: 'validation', component: ValidationComponent, data: {'title': 'Commandes à valider'}},
+      {
+        path: 'cart',
+        component: CartComponent,
+        data: {'title': 'Panier'}
+      },
+      {
+        path: 'validation',
+        component: ValidationComponent,
+        data: {'title': 'Commandes à valider'}
+      },
       // {path: 'reception', component: ReceptionComponent},
       // {path: 'do-reception', component: PerformReceptionComponent},
       // {path: 'reception-local-provider', component: LocalReceptionComponent},

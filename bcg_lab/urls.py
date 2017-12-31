@@ -16,17 +16,23 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf import settings
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic import TemplateView, RedirectView
 from rest_framework.routers import DefaultRouter
+from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh_jwt_token
 
 from provider import views as provider_views
 from product import views as product_views
 from order import views as order_views
+from team import views as team_views
+from bcg_lab import user_views
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
+router.register(r'users', user_views.UserViewSet)
+router.register(r'teams', team_views.TeamViewSet)
 router.register(r'providers', provider_views.ProviderViewSet)
+router.register(r'resellers', provider_views.ResellerViewSet)
 router.register(r'products', product_views.ProductViewSet)
 router.register(r'orders', order_views.OrderViewSet)
 
@@ -34,9 +40,11 @@ router.register(r'orders', order_views.OrderViewSet)
 # Additionally, we include the login URLs for the browsable API.
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/token/auth/', obtain_jwt_token),
+    path('api/token/verify/', verify_jwt_token),
+    path('api/token/refresh/', refresh_jwt_token),
     path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$', RedirectView.as_view(url='/static/%(path)s', permanent=False)),
+    re_path('^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$', RedirectView.as_view(url='/static/%(path)s', permanent=False)),
     path('', TemplateView.as_view(template_name="%s/index.html" % (settings.DEBUG and 'src' or 'dist'))),
 ]
 

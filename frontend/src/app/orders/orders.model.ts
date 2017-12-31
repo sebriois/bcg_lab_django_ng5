@@ -16,6 +16,7 @@ export class OrderModel {
   last_change: Date;
   last_change_human: string;
   attachments: string;
+
 }
 
 export class OrderItemModel {

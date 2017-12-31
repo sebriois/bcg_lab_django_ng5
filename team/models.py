@@ -9,6 +9,7 @@ class Team(models.Model):
     is_active = models.BooleanField(u"Actif?", default=True)
 
     class Meta:
+        db_table = 'team'
         verbose_name = u'Equipe'
         verbose_name_plural = u'Equipes'
         ordering = ('name',)
@@ -31,6 +32,7 @@ class TeamMember(models.Model):
     send_on_sent = models.BooleanField(u"Email quand commande envoyée ?", default=False)
 
     class Meta:
+        db_table = 'team_member'
         verbose_name = u'Membre équipe'
         verbose_name_plural = u'Membres équipe'
         ordering = ('team', 'user__username')

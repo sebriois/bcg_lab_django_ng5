@@ -19,8 +19,6 @@ export class ProviderService {
     nextPage: null,
     prevPage: null
   };
-  private _providers: Array<ProviderModel> = [];
-
   protected _providersSubject: BehaviorSubject<ProviderModel[]> = new BehaviorSubject<ProviderModel[]>([]);
 
   getProviders(): Observable<ProviderModel[]> {
@@ -29,20 +27,33 @@ export class ProviderService {
 
   retrieveProviders(page: number): Observable<any> {
     return this.http.get<ProviderModel[]>(this.baseUrl + '?page=' + page).map(response => {
-      this._providers = response['results'];
-
       this.pagination.totalItems = response['count'];
       this.pagination.currentPage = page;
       this.pagination.nextPage = response['next'];
       this.pagination.prevPage = response['previous'];
 
-      this._providersSubject.next(this._providers);
+      this._providersSubject.next(response['results']);
     });
   }
 
   createProvider(provider: ProviderModel): Observable<any> {
-    return this.http.post<ProviderModel>(this.baseUrl, provider).map(createdProvider => {
+    return this.http.post(this.baseUrl, provider).map(createdProvider => {
+      this.retrieveProviders(this.pagination.currentPage).subscribe();
       return createdProvider;
     });
+  }
+  updateProvider(provider: ProviderModel): Observable<any> {
+    return this.http.put(this.baseUrl + provider.id + "/", provider).map(updatedProvider => {
+      this.retrieveProviders(this.pagination.currentPage).subscribe();
+      return updatedProvider;
+    });
+  }
+
+  getResellers(): Observable<any> {
+    return this.http.get(environment.apiUrl + '/resellers/').map(
+      response => {
+        return response;
+      }
+    )
   }
 }

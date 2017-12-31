@@ -1,7 +1,16 @@
 from rest_framework import serializers
 
+from bcg_lab.user_serializers import UserSerializer
 from product.models import Product
 from provider.models import Provider
+
+
+class ResellerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Provider
+        fields = (
+            'id', 'name'
+        )
 
 
 class ResellerField(serializers.RelatedField):
@@ -10,8 +19,8 @@ class ResellerField(serializers.RelatedField):
 
 
 class ProviderSerializer(serializers.ModelSerializer):
-    users_in_charge = serializers.StringRelatedField(many=True)
     reseller = ResellerField(read_only = True)
+    users_in_charge = UserSerializer(many = True)
 
     class Meta:
         model = Provider

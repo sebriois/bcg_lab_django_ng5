@@ -13,6 +13,7 @@ export class OrdersComponent implements OnInit {
   constructor(private alertService: AlertService, private orderService: OrderService) { }
 
   orders: Observable<OrderModel[]>;
+  currentStatus = 0;
   loading = false;
 
   ngOnInit() {
@@ -23,7 +24,7 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  viewCart() {
-    this.orders.filter()
+  viewCart(): void {
+    this.currentStatus = 0;
   }
 }

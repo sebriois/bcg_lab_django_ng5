@@ -1,42 +1,85 @@
-<div [hidden]="submitted">
-  <form (ngSubmit)="onSubmit()" [formGroup]="providerForm" novalidate>
-    <div class="form-group">
-      <label for="name">Nom du fournisseur</label>
-      <input type="text" name="name" id="name" class="form-control" formControlName="name">
-    </div>
-    <div class="form-group">
-      <label for="users_in_charge">Responsables</label>
-      <input type="text" name="users_in_charge" id="users_in_charge" class="form-control" [(ngModel)]="model.users_in_charge" />
-    </div>
-    <div class="form-group">
-      <label for="reseller">Revendeur</label>
-      <input type="text" name="reseller" id="reseller" class="form-control" [(ngModel)]="model.reseller" />
-    </div>
-    <div class="form-group">
-      <label for="notes">Notes</label>
-      <input type="text" name="notes" id="notes" class="form-control" [(ngModel)]="model.notes" />
-    </div>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input type="checkbox" class="form-check-input" name="is_local" [(ngModel)]="model.is_local"> Fournisseur local ?
-      </label>
-    </div>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input type="checkbox" class="form-check-input" name="is_service" [(ngModel)]="model.is_service"> Type service ?
-      </label>
-    </div>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input type="checkbox" class="form-check-input" name="direct_reception" [(ngModel)]="model.direct_reception">
-        Réception automatique ?
-      </label>
-    </div>
-    <button type="submit" class="btn btn-success" [disabled]="!providerForm.form.valid">
-      <i class="fa fa-plus"></i> Ajouter
-    </button>
-  </form>
+<div class="modal-header">
+  <h4 class="modal-title pull-left">
+    <span *ngIf="provider">{{ provider.name }}</span>
+    <span *ngIf="!provider">Nouveau fournisseur</span>
+  </h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
-<p class="alert alert-info" [hidden]="!submitted">
-  <i class="fa fa-spinner fa-spin"></i> creating provider ...
-</p>
+<div class="modal-body">
+  <p class="alert alert-danger" *ngIf="creationFailed">
+    Erreur à la création du fournisseur
+  </p>
+  <p class="alert alert-info" [hidden]="!submitted">
+    <i class="fa fa-spinner fa-spin"></i> Enregistrement ...
+  </p>
+
+  <div [hidden]="submitted">
+    <form (ngSubmit)="updateOrCreate()" [formGroup]="providerForm" novalidate>
+      <input type="hidden" formControlName="id" *ngIf="provider" />
+
+      <div class="form-group">
+        <label for="name">Nom du fournisseur</label>
+        <input type="text" name="name" id="name" class="form-control" formControlName="name">
+      </div>
+
+      <div class="form-group">
+        <label for="users_in_charge">Responsables</label>
+        <select name="users_in_charge" id="users_in_charge" class="form-control" formControlName="users_in_charge">
+          <option></option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="reseller">Revendeur</label>
+        <select name="reseller" id="reseller" class="form-control" formControlName="reseller">
+          <option value="null">---------</option>
+          <ng-container *ngFor="let reseller of resellers">
+            <option value="{{ reseller.id }}" *ngIf="provider && reseller.id !== provider.id">
+              {{ reseller.name }}
+            </option>
+          </ng-container>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Notes</label>
+        <input type="text" name="notes" id="notes" class="form-control" formControlName="notes"/>
+      </div>
+
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="checkbox" class="form-check-input" name="is_local" formControlName="is_local"> Fournisseur local
+          ?
+        </label>
+      </div>
+
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="checkbox" class="form-check-input" name="is_service" formControlName="is_service"> Type service ?
+        </label>
+      </div>
+
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="checkbox" class="form-check-input" name="direct_reception" formControlName="direct_reception">
+          Réception automatique ?
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-success"
+              [disabled]="providerForm.pristine || providerForm.invalid">
+        <i class="fa fa-check"></i>
+        <span *ngIf="provider">modifier</span>
+        <span *ngIf="!provider">ajouter</span>
+      </button>
+
+      <button type="reset" class="btn btn-danger" (click)="revert()"
+              [disabled]="providerForm.pristine">
+        <i class="fa fa-backward"></i> Reset</button>
+      <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">
+        <i class="fa fa-close"></i> Fermer</button>
+    </form>
+  </div>
+</div>

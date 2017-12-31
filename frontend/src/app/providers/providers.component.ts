@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {AlertService} from '../alerts/alerts.service';
 import {ProviderService} from '../provider.service';
+import {BsModalService} from "ngx-bootstrap/modal";
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import {ProviderModel} from "./providers.model";
+import {ProviderFormComponent} from "../provider-form/provider-form.component";
 
 @Component({
   selector: 'app-providers',
@@ -9,11 +12,15 @@ import {ProviderService} from '../provider.service';
 })
 
 export class ProvidersComponent implements OnInit {
-  constructor(private alertService: AlertService, private providerService: ProviderService) { }
-
+  bsModalRef: BsModalRef;
   providers = this.providerService.getProviders();
   pagination = this.providerService.pagination;
   loading = false;
+
+  constructor(
+    private modalService: BsModalService,
+    private providerService: ProviderService
+  ) { }
 
   ngOnInit() {
     this.loading = true;
@@ -27,5 +34,14 @@ export class ProvidersComponent implements OnInit {
     this.providerService.retrieveProviders(event.page).subscribe(response => {
       this.loading = false;
     });
+  }
+
+  showCreateForm(): void {
+    this.bsModalRef = this.modalService.show(ProviderFormComponent);
+  }
+
+  showEditForm(provider: ProviderModel): void {
+    this.bsModalRef = this.modalService.show(ProviderFormComponent);
+    this.bsModalRef.content.setProvider(provider);
   }
 }
