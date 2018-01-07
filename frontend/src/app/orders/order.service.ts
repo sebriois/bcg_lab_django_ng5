@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {environment} from '../environments/environment';
+import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
-import {OrderModel} from './orders/orders.model';
+import {OrderModel} from './orders.model';
 
 
 @Injectable()
@@ -21,7 +21,6 @@ export class OrderService {
 
   retrieveOrders(): Observable<any> {
     return this.http.get<OrderModel[]>(this.baseUrl).map(orders => {
-      console.log('Retrieving orders');
       this._orders = orders;
       this._ordersSubject.next(this._orders);
     });

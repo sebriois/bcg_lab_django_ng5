@@ -1,5 +1,5 @@
 
-<h4 class="pt-3" [hidden]="!loading"><i class="fa fa-spinner fa-spin"></i> Loading ...</h4>
+<h4 class="pt-3" [hidden]="!loading"><i class="fa fa-spinner fa-spin"></i> Chargement des commandes ...</h4>
 
 <div class="container-fluid" [hidden]="loading">
 <div class="row h-100">
@@ -9,35 +9,35 @@
       <li>
         <a routerLink="cart" routerLinkActive="active" class="d-block p-2 pr-5">
           <i class="fa fa-fw fa-shopping-cart"></i> Panier
-          <span class="badge badge-pill bg-color1 text-white">{{(orders | async | statusFilter: 0).length }}</span>
+          <span class="badge badge-pill bg-color1 text-white">{{(orders | async | orderFilter: {status: 0}).length }}</span>
         </a>
       </li>
 
       <li>
         <a routerLink="validation" routerLinkActive="active" class="d-block p-2 pr-5">
           <i class="fa fa-fw fa-check"></i> Commandes à valider
-          <span class="badge badge-pill bg-color1 text-white">{{(orders | async | statusFilter: 1).length }}</span>
+          <span class="badge badge-pill bg-color1 text-white">{{(orders | async | orderFilter: {status: 1}).length }}</span>
         </a>
       </li>
 
       <li>
-        <a routerLink="validation" routerLinkActive="active" class="d-block p-2 pr-5">
+        <a routerLink="list" routerLinkActive="active" class="d-block p-2 pr-5">
           <i class="fa fa-fw fa-keyboard-o"></i> Commandes à saisir
-          <span class="badge badge-pill bg-color1 text-white">{{(orders | async | statusFilter: 2).length }}</span>
+          <span class="badge badge-pill bg-color1 text-white">{{(orders | async | orderFilter: {status: 2}).length }}</span>
         </a>
       </li>
 
       <li>
         <a routerLink="validation" routerLinkActive="active" class="d-block p-2 pr-5">
           <i class="fa fa-fw fa-building"></i> Réception
-          <span class="badge badge-pill bg-color1 text-white">{{(orders | async | statusFilter: 3).length }}</span>
+          <span class="badge badge-pill bg-color1 text-white">{{(orders | async | orderFilter: {status: 3}).length }}</span>
         </a>
       </li>
 
       <li>
         <a routerLink="validation" routerLinkActive="active" class="d-block p-2 pr-5">
           <i class="fa fa-fw fa-truck"></i> Réception magasin
-          <span class="badge badge-pill bg-color1 text-white">{{(orders | async | statusFilter: 4).length }}</span>
+          <span class="badge badge-pill bg-color1 text-white">{{(orders | async | orderFilter: {status: 4}).length }}</span>
         </a>
       </li>
 

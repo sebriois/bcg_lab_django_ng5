@@ -1,30 +1,9 @@
 <h3 class="page-header">
-  <i class="fa fa-check"></i> En cours de validation <small>{{ (orders | async | statusFilter:1).length }}</small>
+  <i class="fa fa-check"></i> En cours de validation <small>{{ (orders | async).length }}</small>
 </h3>
 
 <app-alerts></app-alerts>
 
-<app-alerts></app-alerts>
-
-<div *ngFor="let order of orders | async | statusFilter:1" class="mb-3">
-  <div class="card">
-    <div class="card-header bg-primary text-light">
-      {{ order.provider }}
-    </div>
-    <div class="card-body">
-      <dl class="row">
-        <dt class="col-sm-3">N° de commande</dt>
-        <dd class="col-sm-9">{{ order.number }}</dd>
-        <dt class="col-sm-3">Budget à imputer</dt>
-        <dd class="col-sm-9">{{ order.budget }}</dd>
-      </dl>
-      <app-order-detail [order]="order"></app-order-detail>
-      <button class="btn btn-success">
-        <i class="fa fa-check"></i> Valider
-      </button>
-    </div>
-    <div class="card-footer text-muted">
-      Dernière modification: {{ order.last_change_human }}
-    </div>
-  </div>
+<div *ngFor="let order of orders | async" class="mb-3">
+  <app-order-detail [order]="order"></app-order-detail>
 </div>

@@ -1,10 +1,9 @@
-
 <h3 class="page-header text-color2">
-  <i class="fa fa-shopping-cart"></i> Panier <small>{{ (orders | async | statusFilter:0).length }}</small>
+  <i class="fa fa-shopping-cart"></i> Panier <small>{{ (orders | async).length }}</small>
 </h3>
 
 <app-alerts></app-alerts>
 
-<div *ngFor="let order of orders | async | statusFilter:0" class="mb-4">
+<div *ngFor="let order of orders | async" class="mb-4">
   <app-order-detail [order]="order"></app-order-detail>
 </div>

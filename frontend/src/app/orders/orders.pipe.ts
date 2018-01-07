@@ -2,14 +2,22 @@ import {Pipe, PipeTransform} from '@angular/core';
 import {OrderModel} from './orders.model';
 
 @Pipe({
-  name: 'statusFilter'
+  name: 'orderFilter'
 })
 
-export class StatusFilterPipe implements PipeTransform {
-  transform(orders: OrderModel[], filter: number): any {
-    if (!orders || !filter) {
-      return orders;
-    }
-    return orders.filter(order => order.status === filter);
+export class OrderFilterPipe implements PipeTransform {
+  transform(orders: OrderModel[], filters: {}): any {
+
+    return orders.filter(order => {
+      // make sure order fields match all filters
+      for ( let i = 0 ; i < Object.keys(filters).length ; i++ ) {
+        let filterKey = Object.keys(filters)[i];
+        if (order.hasOwnProperty(filterKey) && order[filterKey] !== filters[filterKey]) {
+          return false;
+        }
+      }
+
+      return true;
+    });
   }
 }

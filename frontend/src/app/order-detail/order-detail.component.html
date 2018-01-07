@@ -33,18 +33,27 @@
           <span class="d-none d-xl-inline-block">Conditionnement</span>
           <span class="d-inline-block d-xl-none">Cdt.</span>
         </th>
-        <th class="p-2">Référence</th>
-        <th class="p-2">N°Offre</th>
+        <th class="p-2">
+          <span class="d-none d-xl-inline-block">Référence</span>
+          <span class="d-inline-block d-xl-none">Ref.</span>
+        </th>
+        <th class="p-2">Offre</th>
         <th class="p-2">
           <span class="d-none d-xl-inline-block">Nomenclature</span>
           <span class="d-inline-block d-xl-none">Nom.</span>
         </th>
-        <th class="p-2">Prix unitaire</th>
+        <th class="p-2">
+          <span class="d-none d-xl-inline-block">Prix unitaire</span>
+          <span class="d-inline-block d-xl-none">P.U.</span>
+        </th>
         <th class="p-2">
           <span class="d-none d-xl-inline-block">Quantité</span>
           <span class="d-inline-block d-xl-none">Qté.</span>
         </th>
-        <th class="p-2">Prix total</th>
+        <th class="p-2">
+          <span class="d-none d-xl-inline-block">Prix total</span>
+          <span class="d-inline-block d-xl-none">Total</span>
+        </th>
         <th class="p-2"></th>
       </tr>
       </thead>
@@ -63,6 +72,9 @@
         <td class="align-middle p-1">{{ (item.price * item.quantity) | currency:'EUR' }}</td>
         <td class="align-middle p-1">
           <div class="btn-group">
+            <button class="btn btn-dark" tooltip="confidentiel" [ngClass]="{'btn-outline-dark': !item.is_confidential}">
+              <i class="fa fa-user-secret"></i>
+            </button>
             <button class="btn btn-primary btn-sm" tooltip="modifier">
               <i class="fa fa-edit"></i>
             </button>

@@ -1,0 +1,26 @@
+<table class="table table-condensed table-striped">
+  <thead class="thead-dark bg-gradient-color5">
+  <tr>
+    <th>Date</th>
+    <th>Dernière MAJ</th>
+    <th>Fournisseur</th>
+    <th>Equipe</th>
+    <th>Budget</th>
+    <th>Montant</th>
+    <th>Cmde N°</th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders | async">
+      <td>{{ order.date_created }}</td>
+      <td>{{ order.last_change_human }}</td>
+      <td>{{ order.provider }}</td>
+      <td>{{ order.team }}</td>
+      <td>{{ order.budget }}</td>
+      <td></td>
+      <td>{{ order.number }}</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AlertService} from '../alerts/alerts.service';
-import {OrderService} from '../order.service';
+import {OrderService} from './order.service';
 import {Observable} from 'rxjs/Observable';
 import {OrderModel} from './orders.model';
 
@@ -10,10 +10,12 @@ import {OrderModel} from './orders.model';
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
-  constructor(private alertService: AlertService, private orderService: OrderService) { }
+  constructor(
+    private alertService: AlertService,
+    private orderService: OrderService
+  ) { }
 
   orders: Observable<OrderModel[]>;
-  currentStatus = 0;
   loading = false;
 
   ngOnInit() {
@@ -24,7 +26,4 @@ export class OrdersComponent implements OnInit {
     });
   }
 
-  viewCart(): void {
-    this.currentStatus = 0;
-  }
 }

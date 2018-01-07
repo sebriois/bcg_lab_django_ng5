@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../environments/environment";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
-import {UserModel} from "./users/user.model";
+import {UserModel} from "./user.model";
+import {environment} from "../../environments/environment";
 
 @Injectable()
 export class UserService {

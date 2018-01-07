@@ -6,7 +6,7 @@ from bcg_lab.user_serializers import UserSerializer
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    This viewset provides `list` and `retrieve` actions.
+    This viewset provides `order-list` and `retrieve` actions.
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer

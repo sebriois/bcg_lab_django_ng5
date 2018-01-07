@@ -1,6 +1,6 @@
 import {Injectable, OnInit} from '@angular/core';
-import {environment} from '../environments/environment';
-import {ProviderModel} from './providers/providers.model';
+import {environment} from "../../environments/environment";
+import {ProviderModel} from './providers.model';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';

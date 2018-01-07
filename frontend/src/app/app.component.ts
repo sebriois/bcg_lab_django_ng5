@@ -1,6 +1,6 @@
 import {Component, isDevMode, OnInit} from '@angular/core';
 import {environment} from '../environments/environment';
-import {AuthService} from "./auth.service";
+import {AuthService} from "./auth/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,7 @@ import {AuthService} from "./auth.service";
 export class AppComponent implements OnInit {
   title = 'app';
   mode = 'DEV';
+  username: string;
 
   constructor(private authService: AuthService) {}
 
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
   }
 
   isLoggedIn() {
+    this.username = this.authService.username;
     return this.authService.isLoggedIn;
   }
 }

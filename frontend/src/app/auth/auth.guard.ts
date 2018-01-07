@@ -21,9 +21,20 @@ export class AuthGuard implements CanActivate {
   }
 
   checkLogin(url: string): boolean {
-    if (this.authService.token) {
-      let isLoggedIn = this.authService.verifyToken().subscribe(isLoggedIn => {return isLoggedIn;});
-      if (isLoggedIn) { return true; }
+    if (this.authService.isLoggedIn) {
+      if (this.authService.shouldRefresh()) {
+        console.log("should refresh");
+        this.authService.refreshToken().subscribe(isLoggedIn => {
+          return isLoggedIn;
+        });
+      }
+      else {
+        this.authService.verifyToken().subscribe(isLoggedIn => {
+          return isLoggedIn;
+        });
+      }
+
+      if (this.authService.isLoggedIn) { return true; }
     }
 
     // Store the attempted URL for redirecting

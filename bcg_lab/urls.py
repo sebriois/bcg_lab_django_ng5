@@ -40,9 +40,9 @@ router.register(r'orders', order_views.OrderViewSet)
 # Additionally, we include the login URLs for the browsable API.
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/token/auth/', obtain_jwt_token),
-    path('api/token/verify/', verify_jwt_token),
-    path('api/token/refresh/', refresh_jwt_token),
+    path('api/auth/login/', obtain_jwt_token),
+    path('api/auth/verify-token/', verify_jwt_token),
+    path('api/auth/refresh-token/', refresh_jwt_token),
     path('api/', include(router.urls)),
     re_path('^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$', RedirectView.as_view(url='/static/%(path)s', permanent=False)),
     path('', TemplateView.as_view(template_name="%s/index.html" % (settings.DEBUG and 'src' or 'dist'))),

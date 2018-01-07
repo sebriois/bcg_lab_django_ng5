@@ -6,9 +6,10 @@ import {OrdersComponent} from './orders/orders.component';
 import {CartComponent} from './orders/cart/cart.component';
 import {ValidationComponent} from './orders/validation/validation.component';
 import {TeamsComponent} from "./teams/teams.component";
-import {AuthGuard} from "./auth.guard";
-import {LoginComponent} from "./login/login.component";
+import {AuthGuard} from "./auth/auth.guard";
+import {LoginComponent} from "./auth/login.component";
 import {HomeComponent} from "./home/home.component";
+import {OrderListComponent} from "./orders/order-list/order-list.component";
 
 const routes: Routes = [
   {
@@ -55,6 +56,10 @@ const routes: Routes = [
         path: 'validation',
         component: ValidationComponent,
         data: {'title': 'Commandes à valider'}
+      },
+      {
+        path: 'list',
+        component: OrderListComponent,
       },
       // {path: 'reception', component: ReceptionComponent},
       // {path: 'do-reception', component: PerformReceptionComponent},

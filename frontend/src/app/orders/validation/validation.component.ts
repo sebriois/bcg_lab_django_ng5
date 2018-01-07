@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {OrderService} from '../../order.service';
+import {OrderService} from '../order.service';
 import {OrderModel} from '../orders.model';
 import {Observable} from 'rxjs/Observable';
 import {AlertService} from '../../alerts/alerts.service';
@@ -18,7 +18,9 @@ export class ValidationComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.orders = this.orderService.getOrders();
+    this.orders = this.orderService.getOrders().map(orders => {
+      return orders.filter(order => order.status === 1);
+    });
   }
 
 }

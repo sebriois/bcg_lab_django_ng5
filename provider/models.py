@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class Provider(models.Model):
     name = models.CharField('Nom', max_length=100, unique=True)
-    users_in_charge = models.ManyToManyField(User, verbose_name="Responsables", blank=True, null=True)
+    users_in_charge = models.ManyToManyField(User, verbose_name="Responsables", blank=True)
     reseller = models.ForeignKey("Provider", verbose_name="Revendeur", blank=True, null=True, on_delete = models.SET_NULL)
     notes = models.TextField('Notes', blank=True, null=True)
     is_local = models.BooleanField(u'Magasin ?', default=False)

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ProviderService} from '../provider.service';
+import {ProviderService} from './provider.service';
 import {BsModalService} from "ngx-bootstrap/modal";
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import {ProviderModel} from "./providers.model";
