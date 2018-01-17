@@ -14,14 +14,12 @@ export class UserService {
   users: UserModel[];
 
   retrieveUsers(): Observable<UserModel[]> {
-    if (this.users) {
-      return of(this.users);
-    }
-
     return this.http.get<UserModel[]>(this.baseUrl + '/').map(response => {
       this.users = response;
       return this.users;
     });
   }
-
+  hasPermission(user: UserModel, permission: string): boolean {
+    return true;
+  }
 }

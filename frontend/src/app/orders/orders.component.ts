@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {AlertService} from '../alerts/alerts.service';
 import {OrderService} from './order.service';
 import {AuthService} from "../auth/auth.service";
+import {UserModel} from '../users/user.model';
 
 @Component({
   selector: 'app-orders',
@@ -15,7 +16,6 @@ export class OrdersComponent implements OnInit {
     private authService: AuthService
   ) { }
 
-  currentUser = this.authService.loggedInUser;
 
   ngOnInit() {
   }

@@ -3,6 +3,7 @@ import {OrderService} from '../order.service';
 import {OrderModel} from '../orders.model';
 import {Observable} from 'rxjs/Observable';
 import {AlertService} from '../../alerts/alerts.service';
+import {UserService} from '../../users/user.service';
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +14,8 @@ export class CartComponent implements OnInit {
 
   constructor(
     private alertService: AlertService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private userService: UserService
   ) { }
 
   orders: Observable<OrderModel[]>;
@@ -28,3 +30,4 @@ export class CartComponent implements OnInit {
   }
 
 }
+

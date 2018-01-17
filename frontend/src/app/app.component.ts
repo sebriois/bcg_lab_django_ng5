@@ -1,9 +1,6 @@
 import {Component, isDevMode, OnInit} from '@angular/core';
-import {environment} from '../environments/environment';
-import {AuthService} from "./auth/auth.service";
-import {UserService} from "./users/user.service";
-import {UserModel} from "./users/user.model";
-import {Observable} from "rxjs/Observable";
+import {AuthService} from './auth/auth.service';
+import {UserModel} from './users/user.model';
 
 @Component({
   selector: 'app-root',
@@ -13,23 +10,21 @@ import {Observable} from "rxjs/Observable";
 export class AppComponent implements OnInit {
   title = 'app';
   mode = 'DEV';
-  loggedInUser: UserModel;
+  isCollapsed: boolean = false;
+  currentUser: UserModel;
 
   constructor(
-    private authService: AuthService,
-    private userService: UserService
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     if (isDevMode()) {
       this.mode = undefined;
     }
+    this.currentUser = this.authService.getCurrentUser();
   }
 
   isLoggedIn() {
-    if (this.authService.isLoggedIn) {
-      this.loggedInUser = this.authService.loggedInUser;
-    }
-    return this.authService.isLoggedIn;
+    return this.authService.isLoggedIn();
   }
 }

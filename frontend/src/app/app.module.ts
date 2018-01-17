@@ -4,9 +4,10 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ModalModule} from 'ngx-bootstrap/modal';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
+import {CollapseModule} from 'ngx-bootstrap/collapse';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -34,9 +35,9 @@ import { LoginComponent } from './auth/login.component';
 import {AuthService} from "./auth/auth.service";
 import {AuthGuard} from "./auth/auth.guard";
 import { HomeComponent } from './home/home.component';
-import {CookieXSRFStrategy, XSRFStrategy} from "@angular/http";
 import {TokenInterceptor} from "./auth/token.interceptor";
 import { OrderListComponent } from './orders/order-list/order-list.component';
+
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { OrderListComponent } from './orders/order-list/order-list.component';
   ],
   entryComponents: [ProviderFormComponent],
   imports: [
+    CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     PaginationModule.forRoot(),
@@ -85,11 +87,7 @@ import { OrderListComponent } from './orders/order-list/order-list.component';
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    },
-    /*{
-        provide: XSRFStrategy,
-        useValue: new CookieXSRFStrategy('csrftoken', 'X-CSRFToken')
-    }*/
+    }
   ],
   bootstrap: [AppComponent]
 })

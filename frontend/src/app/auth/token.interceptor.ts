@@ -4,8 +4,8 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import {AuthService} from "./auth.service";
-import "rxjs/add/operator/do";
+import {AuthService} from './auth.service';
+import 'rxjs/add/operator/do';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {

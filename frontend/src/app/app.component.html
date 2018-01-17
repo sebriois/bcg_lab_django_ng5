@@ -4,11 +4,11 @@
     <span *ngIf="mode">[{{mode}}]</span>
     BCG-Lab
   </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+  <button class="navbar-toggler collapsed" type="button" (click)="isCollapsed=!isCollapsed">
+    <span class="fa fa-reorder"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse" [collapse]="isCollapsed">
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" routerLink="providers" routerLinkActive="active">
@@ -20,25 +20,26 @@
           <i class="fa fa-flask"></i> Produits
         </a>
       </li>
-      <li class="nav-item dropdown">
+
+      <li class="nav-item" dropdown container="body">
         <a href dropdownToggle (click)="false" class="nav-link dropdown-toggle">
           <i class="fa fa-fax"></i> Commandes
         </a>
         <ul *dropdownMenu class="dropdown-menu">
           <li>
-            <a routerLink="cart" routerLinkActive="active" class="d-block p-2 pr-5 dropdown-item" href="#">
+            <a routerLink="orders/cart" routerLinkActive="active" class="d-block p-2 pr-5 dropdown-item" href="#">
               <i class="fa fa-fw fa-shopping-cart"></i> Panier
             </a>
           </li>
 
           <li>
-            <a routerLink="validation" routerLinkActive="active" class="d-block p-2 pr-5 dropdown-item">
+            <a routerLink="orders/validation" routerLinkActive="active" class="d-block p-2 pr-5 dropdown-item">
               <i class="fa fa-fw fa-check"></i> Commandes à valider
             </a>
           </li>
 
           <li>
-            <a routerLink="list" routerLinkActive="active" class="d-block p-2 pr-5 dropdown-item">
+            <a routerLink="orders/list" routerLinkActive="active" class="d-block p-2 pr-5 dropdown-item">
               <i class="fa fa-fw fa-keyboard-o"></i>
                 Commandes en cours
             </a>
@@ -67,9 +68,9 @@
           <i class="fa fa-users"></i> Equipes
         </a>
       </li>
-      <li class="nav-item" *ngIf="isLoggedIn() && loggedInUser">
+      <li class="nav-item" *ngIf="isLoggedIn()">
         <a class="nav-link">
-          <i class="fa fa-sign-out"></i> déconnexion ({{ loggedInUser.username }})
+          <i class="fa fa-sign-out"></i> déconnexion ({{ currentUser.username }})
         </a>
       </li>
     </ul>

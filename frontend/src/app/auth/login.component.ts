@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from "./auth.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AlertService} from "../alerts/alerts.service";
-import {Router} from "@angular/router";
+import {AuthService} from './auth.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AlertService} from '../alerts/alerts.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -28,17 +28,18 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    let credentials = this.loginForm.value;
+    const credentials = this.loginForm.value;
     this.submitted = true;
     this.authService.login(credentials.username, credentials.password).subscribe(
-      next => {
+      response => {
+        console.log('logged in: ', response, ', redirecting to:', this.authService.redirectUrl);
         this.submitted = false;
         this.router.navigate([this.authService.redirectUrl]);
       },
       error => {
         this.submitted = false;
-        this.alertService.error(error.message);
+        this.alertService.error(error.error.non_field_errors);
       }
-    )
+    );
   }
 }

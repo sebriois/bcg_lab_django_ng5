@@ -1,13 +1,15 @@
-<h3 class="page-header text-color2">
-  <i class="fa fa-shopping-cart"></i> Panier <small>{{ (orders | async).length }}</small>
-</h3>
+<div class="col pt-4">
+  <h3 class="page-header text-color4">
+    <i class="fa fa-shopping-cart"></i> Panier <small>{{ (orders | async).length }}</small>
+  </h3>
 
-<app-alerts></app-alerts>
+  <app-alerts></app-alerts>
 
-<h3 [hidden]="!loading">
-  <i class="fa fa-spinner fa-spin"></i> Chargement des commandes ...
-</h3>
+  <h3 [hidden]="!loading">
+    <i class="fa fa-spinner fa-spin"></i> Chargement du panier ...
+  </h3>
 
-<div [hidden]="loading" *ngFor="let order of orders | async" class="mb-4">
-  <app-order-detail [order]="order"></app-order-detail>
+  <div [hidden]="loading" *ngFor="let order of orders | async" class="mb-4">
+    <app-order-detail [order]="order"></app-order-detail>
+  </div>
 </div>

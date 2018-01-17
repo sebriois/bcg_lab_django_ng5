@@ -5,7 +5,7 @@ export class PermissionModel {
 
 export class GroupModel {
   name: string;
-  permissions: PermissionModel[]
+  permissions: PermissionModel[];
 }
 
 export class UserModel {
@@ -21,8 +21,4 @@ export class UserModel {
   date_joined: Date;
   groups: GroupModel[];
 
-  hasPerm(perm: string): boolean {
-    console.log("checking perm for", perm);
-    return true;
-  }
 }

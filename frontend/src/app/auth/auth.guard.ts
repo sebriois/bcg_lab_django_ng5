@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import {AuthService} from "./auth.service";
-import {UserService} from "../users/user.service";
+import {AuthService} from './auth.service';
+import {UserService} from '../users/user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -13,37 +13,27 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
-    let url: string = state.url;
+    if (this.authService.isLoggedIn()) {
+      console.log('[auth guard] logged in!');
+      // logged in, verify token
+      const isVerified = this.authService.verifyToken().subscribe(isLoggedIn => {
+        return isLoggedIn;
+      });
+      if (isVerified) {
+        return true;
+      }
+    }
+    console.error('[auth guard] NOT logged in!');
 
-    return this.checkLogin(url);
+    // Store the attempted URL for redirecting
+    this.authService.redirectUrl = state.url;
+
+    this.router.navigate(['/login']);
+    return false;
   }
 
   canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return this.canActivate(route, state);
   }
 
-  checkLogin(url: string): boolean {
-    if (this.authService.isLoggedIn) {
-      if (this.authService.shouldRefresh()) {
-        this.authService.refreshToken().subscribe(isLoggedIn => {
-          return isLoggedIn;
-        });
-      }
-      else {
-        this.authService.verifyToken().subscribe(isLoggedIn => {
-          return isLoggedIn;
-        });
-      }
-
-      if (this.authService.isLoggedIn) { return true; }
-    }
-
-    // Store the attempted URL for redirecting
-    this.authService.redirectUrl = url;
-
-    // Navigate to the login page with extras
-    this.router.navigate(['/login']);
-
-    return false;
-  }
 }

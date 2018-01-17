@@ -1,4 +1,4 @@
-import {UserModel} from "../users/user.model";
+import {UserModel} from '../users/user.model';
 
 export class MemberModel {
   id: string;
@@ -11,5 +11,5 @@ export class TeamModel {
   fullname: string;
   shortname: string;
   is_active: boolean;
-  members: MemberModel[]
+  members: MemberModel[];
 }
