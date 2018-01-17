@@ -24,16 +24,11 @@ export class TokenInterceptor implements HttpInterceptor {
     // Pass on the cloned request instead of the original request.
     return next.handle(authReq).do(
       (event: HttpEvent < any > ) => {
-        if (event instanceof HttpResponse) {
-          console.log('--> event: ', event);
-          console.log('--> status: ', event.status);
-        }
         return event;
       },
       (err: any) => {
         if (err instanceof HttpErrorResponse) {
-          console.log('--> error: ', err);
-          console.log('--> errorStatus: ', err.status);
+          console.log(err);
           if (err.status === 401) {
             auth.logout();
           }

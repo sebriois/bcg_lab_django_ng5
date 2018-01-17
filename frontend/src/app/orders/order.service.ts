@@ -19,8 +19,8 @@ export class OrderService {
     return this._ordersSubject.asObservable();
   }
 
-  retrieveOrders(): Observable<any> {
-    return this.http.get<OrderModel[]>(this.baseUrl).map(orders => {
+  retrieveOrders(status: number): Observable<any> {
+    return this.http.get<OrderModel[]>(this.baseUrl + "?status=" + status).map(orders => {
       this._orders = orders;
       this._ordersSubject.next(this._orders);
     });

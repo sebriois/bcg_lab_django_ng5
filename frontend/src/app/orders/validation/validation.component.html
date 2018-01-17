@@ -4,6 +4,10 @@
 
 <app-alerts></app-alerts>
 
-<div *ngFor="let order of orders | async" class="mb-3">
+<h3 [hidden]="!loading">
+  <i class="fa fa-spinner fa-spin"></i> Chargement des commandes ...
+</h3>
+
+<div [hidden]="loading" *ngFor="let order of orders | async" class="mb-4">
   <app-order-detail [order]="order"></app-order-detail>
 </div>

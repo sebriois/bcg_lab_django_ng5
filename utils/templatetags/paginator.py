@@ -24,7 +24,7 @@ def get_query_string(context, other_params={}):
 
 def paginator_number(context, current_page, i):
     """
-    Generates an individual page index link in a paginated list.
+    Generates an individual page index link in a paginated order-list.
     """
     if i == DOT:
         return u'... '
@@ -43,7 +43,7 @@ paginator_number = register.simple_tag(paginator_number)
 
 def pagination(context, page):
     """
-    Generates the series of links to the pages in a paginated list.
+    Generates the series of links to the pages in a paginated order-list.
     """
     paginator, page_num = page.paginator, page.number
 
@@ -60,7 +60,7 @@ def pagination(context, page):
             page_range = range(paginator.num_pages)
         else:
             # Insert "smart" pagination links, so that there are always ON_ENDS
-            # links at either end of the list of pages, and there are always
+            # links at either end of the order-list of pages, and there are always
             # ON_EACH_SIDE links at either end of the "current page" link.
             page_range = []
             if page_num > (ON_EACH_SIDE + ON_ENDS):
@@ -98,7 +98,7 @@ def autopaginate(context, current_page, num_rows):
         page_range = range(num_pages)
     else:
         # Insert "smart" pagination links, so that there are always ON_ENDS
-        # links at either end of the list of pages, and there are always
+        # links at either end of the order-list of pages, and there are always
         # ON_EACH_SIDE links at either end of the "current page" link.
         page_range = []
         if current_page > (ON_EACH_SIDE + ON_ENDS):

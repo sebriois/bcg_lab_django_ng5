@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import {AuthService} from "./auth.service";
+import {UserService} from "../users/user.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private router: Router
   ) {}
 
@@ -23,7 +25,6 @@ export class AuthGuard implements CanActivate {
   checkLogin(url: string): boolean {
     if (this.authService.isLoggedIn) {
       if (this.authService.shouldRefresh()) {
-        console.log("should refresh");
         this.authService.refreshToken().subscribe(isLoggedIn => {
           return isLoggedIn;
         });

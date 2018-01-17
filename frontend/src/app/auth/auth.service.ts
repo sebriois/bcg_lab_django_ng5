@@ -2,15 +2,21 @@ import { Injectable } from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {UserService} from "../users/user.service";
+import {UserModel} from "../users/user.model";
 
 @Injectable()
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private userService: UserService
+  ) {}
   private baseUrl = environment.apiUrl + '/auth';
   private expiration = 300;  // seconds
   token: string;
   username: string;
   isLoggedIn = false;
+  loggedInUser: UserModel;
   lastTokenRefresh: number;
   redirectUrl = '/'; // store the URL so we can redirect after logging in
 
@@ -33,9 +39,6 @@ export class AuthService {
 
   /* Should refresh token a bit before it expires */
   shouldRefresh(): boolean {
-    console.log("now: " + Date.now());
-    console.log("will expire: " + (this.lastTokenRefresh + (0.9 * this.expiration * 1000)));
-
     return (this.lastTokenRefresh + (0.9 * this.expiration * 1000)) < Date.now();
   }
 
@@ -67,10 +70,16 @@ export class AuthService {
         }
         this.username = data.username;
         this.isLoggedIn = true;
+        this.userService.retrieveUsers().subscribe(users => {
+          this.loggedInUser = users.find(user => {
+            return user.username === data.username;
+          });
+        });
         return true;
       },
       error => {
         this.username = undefined;
+        this.loggedInUser = undefined;
         this.isLoggedIn = false;
         return false;
       }

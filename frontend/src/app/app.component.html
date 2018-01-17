@@ -20,10 +20,41 @@
           <i class="fa fa-flask"></i> Produits
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="orders" routerLinkActive="active">
+      <li class="nav-item dropdown">
+        <a href dropdownToggle (click)="false" class="nav-link dropdown-toggle">
           <i class="fa fa-fax"></i> Commandes
         </a>
+        <ul *dropdownMenu class="dropdown-menu">
+          <li>
+            <a routerLink="cart" routerLinkActive="active" class="d-block p-2 pr-5 dropdown-item" href="#">
+              <i class="fa fa-fw fa-shopping-cart"></i> Panier
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="validation" routerLinkActive="active" class="d-block p-2 pr-5 dropdown-item">
+              <i class="fa fa-fw fa-check"></i> Commandes à valider
+            </a>
+          </li>
+
+          <li>
+            <a routerLink="list" routerLinkActive="active" class="d-block p-2 pr-5 dropdown-item">
+              <i class="fa fa-fw fa-keyboard-o"></i>
+                Commandes en cours
+            </a>
+          </li>
+          <li class="divider dropdown-divider"></li>
+          <li>
+            <a routerLink="delivery" routerLinkActive="active" class="d-block p-2 pr-5 dropdown-item">
+              <i class="fa fa-fw fa-building"></i> Réception
+            </a>
+          </li>
+          <li>
+            <a routerLink="local_delivery" routerLinkActive="active" class="d-block p-2 pr-5 dropdown-item">
+              <i class="fa fa-fw fa-truck"></i> Réception magasin
+            </a>
+          </li>
+        </ul>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#"><i class="fa fa-bank"></i> Budgets</a>
@@ -36,9 +67,9 @@
           <i class="fa fa-users"></i> Equipes
         </a>
       </li>
-      <li class="nav-item" *ngIf="isLoggedIn()">
+      <li class="nav-item" *ngIf="isLoggedIn() && loggedInUser">
         <a class="nav-link">
-          <i class="fa fa-sign-out"></i> déconnexion ({{ username }})
+          <i class="fa fa-sign-out"></i> déconnexion ({{ loggedInUser.username }})
         </a>
       </li>
     </ul>

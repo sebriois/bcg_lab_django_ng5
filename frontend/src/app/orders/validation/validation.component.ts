@@ -17,9 +17,10 @@ export class ValidationComponent implements OnInit {
   loading = false;
 
   ngOnInit() {
+    this.orders = this.orderService.getOrders();
     this.loading = true;
-    this.orders = this.orderService.getOrders().map(orders => {
-      return orders.filter(order => order.status === 1);
+    this.orderService.retrieveOrders(1).subscribe(() => {
+      this.loading = false;
     });
   }
 

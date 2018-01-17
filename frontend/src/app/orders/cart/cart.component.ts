@@ -17,10 +17,13 @@ export class CartComponent implements OnInit {
   ) { }
 
   orders: Observable<OrderModel[]>;
+  loading: boolean;
 
   ngOnInit() {
-    this.orders = this.orderService.getOrders().map(orders => {
-      return orders.filter(order => order.status === 0);
+    this.orders = this.orderService.getOrders();
+    this.loading = true;
+    this.orderService.retrieveOrders(0).subscribe(() => {
+      this.loading = false;
     });
   }
 

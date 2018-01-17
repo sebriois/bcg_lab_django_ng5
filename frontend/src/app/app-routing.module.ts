@@ -42,9 +42,6 @@ const routes: Routes = [
   {
     path: 'orders',
     component: OrdersComponent,
-    canActivate: [AuthGuard],
-    // outlet: 'orders',
-    // canActivate: [AuthGuard],
     canActivateChild: [AuthGuard],
     children: [
       {

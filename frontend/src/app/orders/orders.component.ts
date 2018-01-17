@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AlertService} from '../alerts/alerts.service';
 import {OrderService} from './order.service';
-import {Observable} from 'rxjs/Observable';
-import {OrderModel} from './orders.model';
+import {AuthService} from "../auth/auth.service";
 
 @Component({
   selector: 'app-orders',
@@ -12,18 +11,13 @@ import {OrderModel} from './orders.model';
 export class OrdersComponent implements OnInit {
   constructor(
     private alertService: AlertService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private authService: AuthService
   ) { }
 
-  orders: Observable<OrderModel[]>;
-  loading = false;
+  currentUser = this.authService.loggedInUser;
 
   ngOnInit() {
-    this.loading = true;
-    this.orders = this.orderService.getOrders();
-    this.orderService.retrieveOrders().subscribe(response => {
-      this.loading = false;
-    });
   }
 
 }

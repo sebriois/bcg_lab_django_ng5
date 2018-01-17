@@ -16,11 +16,13 @@ export class OrderListComponent implements OnInit {
     private orderService: OrderService
   ) { }
 
-  orders: Observable<OrderModel[]>;
+  orders = this.orderService.getOrders();
+  loading: boolean;
 
   ngOnInit() {
-    this.orders = this.orderService.getOrders().map(orders => {
-      return orders.filter(order => order.status === 2);
+    this.loading = true;
+    this.orderService.retrieveOrders(3).subscribe(() => {
+      this.loading = false;
     });
   }
 

@@ -4,21 +4,24 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
 import {UserModel} from "./user.model";
 import {environment} from "../../environments/environment";
+import {of} from "rxjs/observable/of";
 
 @Injectable()
 export class UserService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  private baseUrl: string = environment.apiUrl + '/users/';
-  protected _usersSubject: BehaviorSubject<UserModel[]> = new BehaviorSubject<UserModel[]>([]);
+  private baseUrl: string = environment.apiUrl + '/users';
+  users: UserModel[];
 
-  getUsers(): Observable<UserModel[]> {
-    return this._usersSubject.asObservable();
-  }
+  retrieveUsers(): Observable<UserModel[]> {
+    if (this.users) {
+      return of(this.users);
+    }
 
-  retrieveUsers(): Observable<any> {
-    return this.http.get<UserModel[]>(this.baseUrl).map(response => {
-      this._usersSubject.next(response);
+    return this.http.get<UserModel[]>(this.baseUrl + '/').map(response => {
+      this.users = response;
+      return this.users;
     });
   }
+
 }

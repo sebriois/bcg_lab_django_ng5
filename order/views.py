@@ -1,7 +1,6 @@
 from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from order.models import Order
 from order.serializers import OrderSerializer
@@ -14,52 +13,103 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
 
     def get_queryset(self):
-        user = self.request.user
-        if user.is_superuser:
-            print(user.username, "(superuser)")
+        status = int(self.request.GET.get("status", 0))
+        if status == 0:
+            orders = self.cart()
+        elif status == 1:
+            orders = self.to_be_validated()
+        elif status == 2:
+            orders = self.validated()
+        elif status == 3:
+            orders = self.to_be_sent()
+        elif status == 4:
+            orders = self.sent()
         else:
-            print(user.username)
+            orders = Order.objects.none()
 
-        order_ids = set()  # collect order IDs that can be returned to the user
+        # Exclude confidential orders
+        if not self.request.user.has_perm('budget.custom_view_budget'):
+            orders = orders.filter(
+                Q(items__is_confidential = False) |
+                Q(items__username = self.request.user.username)
+            )
 
-        user_team_ids = set(user.teammember_set.only('team_id').values_list('team_id', flat = True))
-        in_cart = Order.objects.filter(
-            Q(status = 0, items__username = user.username) |
-            Q(status = 0, team__in = list(user_team_ids))
+        return orders.distinct()
+
+    def cart(self):
+        orders = Order.objects.filter(status = 0)
+
+        return orders.filter(
+            Q(items__username = self.request.user.username) |
+            Q(team__in = self.request.user.teammember_set.only('team_id').values_list('team_id', flat = True))
         )
 
-        if not user.has_perm('budget.custom_view_budget'):
-            in_cart = in_cart.filter(
-                Q(items__username = user.username) |
-                Q(items__is_confidential = False)
-            )
-        order_ids.update([order.id for order in in_cart.only('id')])
-        print(in_cart.count())
+    def to_be_validated(self):
+        orders = Order.objects.filter(status = 1)
+        if self.request.user.is_superuser:
+            return orders
 
-        # Commandes à saisir
-        if user.has_perm('order.custom_goto_status_4') and not user.is_superuser:
-            order_list = Order.objects.exclude(provider__is_local = True)
-            order_list = order_list.filter(
-                Q(status__in = [2, 3, 4]) |
-                Q(status = 1, team__in = user_team_ids) |
-                Q(status = 1, items__username = user.username)
-            )
+        return orders.filter(
+            Q(items__username = self.request.user.username) |
+            Q(team__in = self.request.user.teammember_set.only('team_id').values_list('team_id', flat = True))
+        )
 
-        # Commandes en cours - toutes équipes
-        elif user.has_perm("team.custom_view_teams") and not user.is_superuser:
-            order_list = Order.objects.filter(status__in = [2, 3, 4])
+    def validated(self):
+        orders = Order.objects.filter(status = 2)
+        if self.request.user.is_superuser:
+            return orders
 
-        elif user.is_superuser:
-            order_list = Order.objects.filter(status__in = [1, 2, 3, 4])
+        # commandes à saisir
+        if self.request.user.has_perm('order.custom_goto_status_4'):
+            return orders.exclude(provider__is_local = True)
 
-        # Commandes en cours - par équipe
-        else:
-            order_list = Order.objects.filter(
-                status__in = [1, 2, 3, 4]
-            ).filter(
-                Q(items__username = user.username) |
-                Q(team__in = user_team_ids)
-            )
+        # commandes en cours - toutes équipes
+        if self.request.user.has_perm('team.custom_view_teams'):
+            return orders
+
+        # commandes en cours - par équipe
+        return orders.filter(
+            Q(items__username = self.request.user.username) |
+            Q(team__in = self.request.user.teammember_set.only('team_id').values_list('team_id', flat = True))
+        )
+
+    def to_be_sent(self):
+        orders = Order.objects.filter(status = 3)
+        if self.request.user.is_superuser:
+            return orders
+
+        # commandes à saisir
+        if self.request.user.has_perm('order.custom_goto_status_4'):
+            return orders.exclude(provider__is_local = True)
+
+        # commandes en cours - toutes équipes
+        if self.request.user.has_perm('team.custom_view_teams'):
+            return orders
+
+        # commandes en cours - par équipe
+        return orders.filter(
+            Q(items__username = self.request.user.username) |
+            Q(team__in = self.request.user.teammember_set.only('team_id').values_list('team_id', flat = True))
+        )
+
+    def sent(self):
+        orders = Order.objects.filter(status = 4)
+        if self.request.user.is_superuser:
+            return orders
+
+        # commandes à saisir
+        if self.request.user.has_perm('order.custom_goto_status_4'):
+            return orders.exclude(provider__is_local = True)
+
+        # commandes en cours - toutes équipes
+        if self.request.user.has_perm('team.custom_view_teams'):
+            return orders
+
+        # commandes en cours - par équipe
+        return orders.filter(
+            Q(items__username = self.request.user.username) |
+            Q(team__in = self.request.user.teammember_set.only('team_id').values_list('team_id', flat = True))
+        )
 
         # Exclude confidential orders
         if not user.has_perm('budget.custom_view_budget'):
@@ -67,6 +117,6 @@ class OrderViewSet(viewsets.ModelViewSet):
                 Q(items__is_confidential = False) |
                 Q(items__username = user.username)
             )
-        print(order_list.count())
+
         order_ids.update([order.id for order in order_list.only('id')])
         return Order.objects.filter(id__in = order_ids)

@@ -10,7 +10,7 @@ export class GroupModel {
 
 export class UserModel {
   id: number;
-  name: string;
+  username: string;
   first_name: string;
   last_name: string;
   email: string;
@@ -20,4 +20,9 @@ export class UserModel {
   last_login: Date;
   date_joined: Date;
   groups: GroupModel[];
+
+  hasPerm(perm: string): boolean {
+    console.log("checking perm for", perm);
+    return true;
+  }
 }
