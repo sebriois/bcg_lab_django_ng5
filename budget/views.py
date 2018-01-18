@@ -1,3 +1,41 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 
-# Create your views here.
+from budget.models import Budget, BudgetLine
+from budget.serializers import BudgetSerializer, BudgetLineSerializer
+
+
+class BudgetViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    queryset = Budget.objects.none()
+    serializer_class = BudgetSerializer
+
+    def get_queryset(self):
+        if self.request.user.has_perms(['team.custom_view_teams', 'budget.custom_view_budget']):
+            return Budget.objects.filter(is_active = True)
+
+        if self.request.user.has_perm("budget.custom_view_budget"):
+            return Budget.objects.filter(
+                is_active = True,
+                team__in = self.request.user.teammember_set.only('team_id').values_list('team_id', flat = True)
+            )
+
+        return Budget.objects.none()
+
+
+class BudgetLineViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    queryset = BudgetLine.objects.none()
+    serializer_class = BudgetLineSerializer
+
+    def get_queryset(self):
+        if self.request.user.has_perms(['team.custom_view_teams', 'budget.custom_view_budget']):
+            return BudgetLine.objects.filter(is_active = True)
+
+        if self.request.user.has_perm("budget.custom_view_budget"):
+            return BudgetLine.objects.filter(
+                is_active = True,
+                team__in = self.request.user.teammember_set.only('team_id').values_list('team_id', flat = True)
+            )
+
+        return BudgetLine.objects.none()

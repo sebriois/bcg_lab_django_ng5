@@ -10,6 +10,7 @@ import {AuthGuard} from "./auth/auth.guard";
 import {LoginComponent} from "./auth/login.component";
 import {HomeComponent} from "./home/home.component";
 import {OrderListComponent} from "./orders/order-list/order-list.component";
+import {BudgetsComponent} from './budgets/budgets.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,14 @@ const routes: Routes = [
     component: ProductsComponent,
     data: {
       'title': 'Produits'
+    },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'budgets',
+    component: BudgetsComponent,
+    data: {
+      'title': 'Budgets'
     },
     canActivate: [AuthGuard]
   },

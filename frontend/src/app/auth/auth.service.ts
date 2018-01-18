@@ -37,11 +37,14 @@ export class AuthService {
   }
 
   verifyToken(): Observable<boolean> {
-    console.log('checking token: ' + localStorage.getItem('token'));
+    console.log('checking token');
     return this.http.post<any>(this.baseUrl + '/verify-token/', {'token': localStorage.getItem('token')}).map(
       response => {
-        console.log('-> valid token');
-        this.lastTokenRefresh = Date.now();
+        if (this.shouldRefresh()) {
+          console.log('-> SHOULD REFRESH TOKEN!');
+        } else {
+          console.log('-> valid token');
+        }
         return true;
       },
       error => {

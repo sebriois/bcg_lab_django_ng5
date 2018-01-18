@@ -24,6 +24,7 @@ from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh
 from provider import views as provider_views
 from product import views as product_views
 from order import views as order_views
+from budget import views as budget_views
 from team import views as team_views
 from bcg_lab import user_views
 
@@ -35,6 +36,7 @@ router.register(r'providers', provider_views.ProviderViewSet)
 router.register(r'resellers', provider_views.ResellerViewSet)
 router.register(r'products', product_views.ProductViewSet)
 router.register(r'orders', order_views.OrderViewSet)
+router.register(r'budgets', budget_views.BudgetViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browsable API.

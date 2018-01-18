@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -29,15 +29,16 @@ import {AlertService} from './alerts/alerts.service';
 import {ProviderService} from './providers/provider.service';
 import {ProductService} from './products/product.service';
 import {OrderService} from './orders/order.service';
-import {UserService} from "./users/user.service";
-import {TeamsService} from "./teams/teams.service";
+import {UserService} from './users/user.service';
+import {TeamsService} from './teams/teams.service';
 import { LoginComponent } from './auth/login.component';
-import {AuthService} from "./auth/auth.service";
-import {AuthGuard} from "./auth/auth.guard";
+import {AuthService} from './auth/auth.service';
+import {AuthGuard} from './auth/auth.guard';
 import { HomeComponent } from './home/home.component';
-import {TokenInterceptor} from "./auth/token.interceptor";
+import {TokenInterceptor} from './auth/token.interceptor';
 import { OrderListComponent } from './orders/order-list/order-list.component';
-
+import {BudgetService} from './budgets/budgets.service';
+import { BugetlinesComponent } from './bugetlines/bugetlines.component';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { OrderListComponent } from './orders/order-list/order-list.component';
     TeamsComponent,
     LoginComponent,
     HomeComponent,
-    OrderListComponent
+    OrderListComponent,
+    BugetlinesComponent
   ],
   entryComponents: [ProviderFormComponent],
   imports: [
@@ -80,9 +82,14 @@ import { OrderListComponent } from './orders/order-list/order-list.component';
     AlertService,
     ProviderService,
     ProductService,
+    BudgetService,
     OrderService,
     UserService,
     TeamsService,
+    {
+      provide: LOCALE_ID,
+      useValue: 'fr'
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

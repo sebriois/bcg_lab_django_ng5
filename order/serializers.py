@@ -40,7 +40,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     provider = serializers.StringRelatedField(read_only = True)
-    team = serializers.StringRelatedField(read_only = True)
     budget = serializers.StringRelatedField(read_only = True)
     items = OrderItemSerializer(many = True)
     attachments = AttachmentSerializer(many = True)

@@ -6,10 +6,14 @@ import {
 import { Observable } from 'rxjs/Observable';
 import {AuthService} from './auth.service';
 import 'rxjs/add/operator/do';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-  constructor(private injector: Injector) {}
+  constructor(
+    private injector: Injector,
+    private router: Router
+  ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // trick from: https://github.com/angular/angular/issues/18224#issuecomment-316957213
@@ -29,8 +33,10 @@ export class TokenInterceptor implements HttpInterceptor {
       (err: any) => {
         if (err instanceof HttpErrorResponse) {
           console.log(err);
-          if (err.status === 401) {
+          if (err.status === 401 || err.status === 400) {
             auth.logout();
+            auth.redirectUrl = req.url;
+            this.router.navigate(['/login']);
           }
         }
         return err;

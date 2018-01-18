@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-color1" *ngIf="isLoggedIn()">
   <a class="navbar-brand" href="#">
     <span *ngIf="mode">[{{mode}}]</span>
-    BCG-Lab
+    <i class="fa fa-home"></i> BCG-Lab
   </a>
   <button class="navbar-toggler collapsed" type="button" (click)="isCollapsed=!isCollapsed">
     <span class="fa fa-reorder"></span>
@@ -58,7 +58,9 @@
         </ul>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fa fa-bank"></i> Budgets</a>
+        <a class="nav-link" routerLink="budgets" routerLinkActive="active">
+          <i class="fa fa-bank"></i> Budgets
+        </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#"><i class="fa fa-history"></i> Historique</a>

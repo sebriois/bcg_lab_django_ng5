@@ -36,6 +36,9 @@ class Budget(models.Model):
     def get_amount_spent(self):
         return sum([bl.debit * bl.quantity for bl in BudgetLine.objects.filter(budget_id = self.id, debit__isnull = False)])
 
+    def get_budgetlines(self):
+        return BudgetLine.objects.filter(budget_id = self.id)
+
     def update_budgetlines(self):
         for bl in BudgetLine.objects.filter(budget_id = self.id):
             bl.team = self.team.name
