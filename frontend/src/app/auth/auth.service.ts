@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   verifyToken(): Observable<boolean> {
-    console.log('checking token');
+    console.log('checking token', 'JWT ' + localStorage.getItem('token'));
     return this.http.post<any>(this.baseUrl + '/verify-token/', {'token': localStorage.getItem('token')}).map(
       response => {
         if (this.shouldRefresh()) {

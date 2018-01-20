@@ -37,6 +37,7 @@ router.register(r'resellers', provider_views.ResellerViewSet)
 router.register(r'products', product_views.ProductViewSet)
 router.register(r'orders', order_views.OrderViewSet)
 router.register(r'budgets', budget_views.BudgetViewSet)
+router.register(r'budgetlines', budget_views.BudgetLineViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browsable API.

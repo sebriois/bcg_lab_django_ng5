@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
@@ -30,12 +31,16 @@ class BudgetLineViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         if self.request.user.has_perms(['team.custom_view_teams', 'budget.custom_view_budget']):
-            return BudgetLine.objects.filter(is_active = True)
-
-        if self.request.user.has_perm("budget.custom_view_budget"):
-            return BudgetLine.objects.filter(
+            queryset = BudgetLine.objects.filter(is_active = True)
+        elif self.request.user.has_perm("budget.custom_view_budget"):
+            queryset = BudgetLine.objects.filter(
                 is_active = True,
                 team__in = self.request.user.teammember_set.only('team_id').values_list('team_id', flat = True)
             )
+        else:
+            return BudgetLine.objects.none()
 
-        return BudgetLine.objects.none()
+        q = Q()
+        q.children = list(self.request.GET.items())
+
+        return queryset.filter(q)

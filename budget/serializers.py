@@ -15,7 +15,7 @@ class BudgetLineSerializer(serializers.ModelSerializer):
             'number',
             'date',
             'budget_type',
-            'default_nature',
+            'nature',
             'origin',
             'provider',
             'product',
