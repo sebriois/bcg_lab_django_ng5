@@ -10,13 +10,15 @@ class BudgetLineSerializer(serializers.ModelSerializer):
     class Meta:
         model = BudgetLine
         fields = (
+            'team',
+            'budget',
             'number',
             'date',
+            'budget_type',
+            'default_nature',
             'origin',
             'provider',
-            'offer',
             'product',
-            'reference',
             'quantity',
             'product_price',
             'credit',

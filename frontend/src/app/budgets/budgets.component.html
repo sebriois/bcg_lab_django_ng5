@@ -11,60 +11,48 @@
   <h3 class="text-color4 page-header">
     <i class="fa fa-bank"></i> Gestion des budgets <small>{{ pagination.totalItems }}</small>
   </h3>
-  <div class="row">
-    <div class="col-3 bg-light p-2 border">
-      <h4>Filtres</h4>
-      <form>
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Equipe" />
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Budget" />
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Tutelle" />
-        </div>
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Nature" />
-        </div>
-      </form>
+  <div class="d-lg-flex">
+    <div class="bg-light p-2 border mb-md-3 mr-lg-3">
+      <app-budget-filter-form></app-budget-filter-form>
     </div>
-    <div class="col">
+    <div class="w-100">
       <h4 *ngIf="loading"><i class="fa fa-spinner fa-spin"></i> Chargement des budgets ...</h4>
 
-      <table class="table table-condensed table-bordered table-striped w-100" [hidden]="loading || pagination.totalItems === 0">
+      <table class="table table-condensed table-bordered table-striped w-100"
+             [hidden]="loading || pagination.totalItems === 0"
+      >
         <thead class="table-dark bg-gradient-color5">
         <tr>
-          <th>Equipe</th>
-          <th>Budget</th>
-          <th>Tutelle</th>
-          <th>Nature</th>
-          <th>Montant dépensé</th>
-          <th>Montant disponible</th>
-          <th></th>
+          <th class="align-middle p-2">Equipe</th>
+          <th class="align-middle p-2">Budget</th>
+          <th class="align-middle p-2">Tutelle</th>
+          <th class="align-middle p-2">Nature</th>
+          <th class="align-middle p-2">Montant dépensé</th>
+          <th class="align-middle p-2">Montant disponible</th>
+          <th class="align-middle p-2"></th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let budget of budgets | async">
-          <td class="align-middle">{{ budget.team }}</td>
-          <td class="align-middle">{{ budget.name }}</td>
-          <td class="align-middle">{{ budget.budget_type }}</td>
-          <td class="align-middle">{{ budget.default_nature ? budget.default_nature : 'Toutes'}}</td>
-          <td class="align-middle text-danger">({{ getAmountSpent(budget)|number:'1.2-2' }})</td>
-          <td class="align-middle"><b>{{ getAmountLeft(budget)|number:'1.2-2' }}</b></td>
-          <td>
+          <td class="align-middle p-1">{{ budget.team }}</td>
+          <td class="align-middle p-1">{{ budget.name }}</td>
+          <td class="align-middle p-1">{{ budget.budget_type }}</td>
+          <td class="align-middle p-1">{{ budget.default_nature ? budget.default_nature : 'Toutes'}}</td>
+          <td class="align-middle p-1 text-danger">({{ getAmountSpent(budget)|number:'1.2-2' }})</td>
+          <td class="align-middle p-1"><b>{{ getAmountLeft(budget)|number:'1.2-2' }}</b></td>
+          <td class="align-middle p-1">
             <div class="btn-group">
               <button type="button" class="btn btn-info btn-sm">
-                <i class="fa fa-list"></i>
+                <i class="fa fa-list"></i> détail
               </button>
               <button type="button" class="btn btn-primary btn-sm">
-                <i class="fa fa-edit"></i>
+                <i class="fa fa-edit"></i> éditer
               </button>
               <button type="button" class="btn btn-warning btn-sm">
-                <i class="fa fa-lock"></i>
+                <i class="fa fa-archive"></i> archiver
               </button>
               <button type="button" class="btn btn-danger btn-sm">
-                <i class="fa fa-trash"></i>
+                <i class="fa fa-trash"></i> supprimer
               </button>
             </div>
           </td>

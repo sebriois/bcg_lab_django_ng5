@@ -108,6 +108,9 @@ class BudgetLine(models.Model):
         verbose_name_plural = "Lignes budgétaires"
         ordering = ("team", "budget", "date", "-order_id")
 
+    def get_budget(self):
+        return Budget.objects.get(id = self.budget_id)
+
     def get_provider_display(self):
         try:
             provider = Provider.objects.get(name = self.provider)

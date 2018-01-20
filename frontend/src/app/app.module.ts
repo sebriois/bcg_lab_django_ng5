@@ -39,6 +39,7 @@ import {TokenInterceptor} from './auth/token.interceptor';
 import { OrderListComponent } from './orders/order-list/order-list.component';
 import {BudgetService} from './budgets/budgets.service';
 import { BugetlinesComponent } from './bugetlines/bugetlines.component';
+import { BudgetFilterFormComponent } from './budget-filter-form/budget-filter-form.component';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import { BugetlinesComponent } from './bugetlines/bugetlines.component';
     LoginComponent,
     HomeComponent,
     OrderListComponent,
-    BugetlinesComponent
+    BugetlinesComponent,
+    BudgetFilterFormComponent
   ],
   entryComponents: [ProviderFormComponent],
   imports: [
