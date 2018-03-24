@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {TeamsService} from './teams.service';
-import {AuthService} from '../auth/auth.service';
+import {TeamsService} from '../services/teams.service';
+import {AuthService} from '../services/auth.service';
 import {MemberModel} from './teams.model';
-import {UserService} from '../users/user.service';
+import {UserService} from '../services/user.service';
 
 @Component({
   selector: 'app-teams',
@@ -26,10 +26,7 @@ export class TeamsComponent implements OnInit {
       this.loading = false;
     });
   }
-  isMe(member: MemberModel): boolean {
-    return member.user.id === this.currentUser.id;
-  }
   can(permission: string): boolean {
-    return this.userService.hasPermission(this.currentUser, permission);
+    return this.userService.hasPermission(permission);
   }
 }

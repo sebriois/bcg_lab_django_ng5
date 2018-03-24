@@ -58,7 +58,7 @@
         </ul>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="budgets" routerLinkActive="active">
+        <a class="nav-link" routerLink="budget" routerLinkActive="active">
           <i class="fa fa-bank"></i> Budgets
         </a>
       </li>
@@ -72,11 +72,12 @@
       </li>
       <li class="nav-item" *ngIf="isLoggedIn()">
         <a class="nav-link">
-          <i class="fa fa-sign-out"></i> déconnexion ({{ currentUser.username }})
+          <i class="fa fa-sign-out"></i> déconnexion ({{ (currentUser|async).username }})
         </a>
       </li>
     </ul>
   </div>
 </nav>
 
+<app-alerts></app-alerts>
 <router-outlet></router-outlet>

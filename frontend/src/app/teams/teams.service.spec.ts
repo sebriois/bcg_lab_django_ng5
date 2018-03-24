@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { TeamsService } from './teams.service';
+import { TeamsService } from '../services/teams.service';
 
 describe('TeamsService', () => {
   beforeEach(() => {

@@ -1,10 +1,10 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {ProductModel} from "./products.model";
+import {ProductModel} from '../products/products.model';
 import 'rxjs/add/operator/map';
-import {environment} from "../../environments/environment";
+import {environment} from '../../environments/environment';
 
 
 @Injectable()

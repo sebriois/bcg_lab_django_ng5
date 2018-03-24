@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from './auth.service';
+import {AuthService} from '../services/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AlertService} from '../alerts/alerts.service';
 import {Router} from '@angular/router';
+import 'rxjs/add/operator/mergeMap';
+import {UserService} from '../services/user.service';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +21,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private alertService: AlertService,
     private formBuilder: FormBuilder,
+    private userService: UserService,
     private router: Router
   ) { }
 
@@ -25,20 +30,30 @@ export class LoginComponent implements OnInit {
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
+    if (this.authService.isLoggedIn()) {
+      setTimeout(
+        this.authService.refreshToken().subscribe(hasNewToken => {
+            console.log('has new token', hasNewToken);
+          },
+          error => {
+            console.log(error);
+          }),
+        this.authService.expiration * 1000
+      );
+    }
   }
 
   login() {
     const credentials = this.loginForm.value;
     this.submitted = true;
     this.authService.login(credentials.username, credentials.password).subscribe(
-      response => {
-        console.log('logged in: ', response, ', redirecting to:', this.authService.redirectUrl);
+      isLoggedIn => {
+        console.log('logged in:', isLoggedIn);
         this.submitted = false;
         this.router.navigate([this.authService.redirectUrl]);
       },
-      error => {
-        this.submitted = false;
-        this.alertService.error(error.error.non_field_errors);
+      errorMsg => {
+        this.alertService.error(errorMsg);
       }
     );
   }

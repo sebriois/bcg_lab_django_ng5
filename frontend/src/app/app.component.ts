@@ -1,6 +1,7 @@
 import {Component, isDevMode, OnInit} from '@angular/core';
-import {AuthService} from './auth/auth.service';
+import {AuthService} from './services/auth.service';
 import {UserModel} from './users/user.model';
+import {AlertService} from './alerts/alerts.service';
 
 @Component({
   selector: 'app-root',
@@ -11,17 +12,26 @@ export class AppComponent implements OnInit {
   title = 'app';
   mode = 'DEV';
   isCollapsed: boolean = false;
-  currentUser: UserModel;
+  currentUser = this.authService.getCurrentUser();
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
     if (isDevMode()) {
       this.mode = undefined;
     }
-    this.currentUser = this.authService.getCurrentUser();
+    this.authService.retrieveCurrentUser();
+    if (this.isLoggedIn()) {
+      this.authService.refreshToken().subscribe(hasRefreshed => {
+        console.log('token refreshed: ', hasRefreshed);
+      }, error => {
+        console.error(error);
+        this.alertService.error(error);
+      });
+    }
   }
 
   isLoggedIn() {

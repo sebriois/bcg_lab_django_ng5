@@ -40,7 +40,10 @@ class BudgetLineViewSet(viewsets.ModelViewSet):
         else:
             return BudgetLine.objects.none()
 
+        get_params = self.request.GET.copy()
+        get_params.pop('page', None)
+
         q = Q()
-        q.children = list(self.request.GET.items())
+        q.children = list(get_params.items())
 
         return queryset.filter(q)

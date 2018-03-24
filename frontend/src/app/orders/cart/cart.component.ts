@@ -3,7 +3,7 @@ import {OrderService} from '../order.service';
 import {OrderModel} from '../orders.model';
 import {Observable} from 'rxjs/Observable';
 import {AlertService} from '../../alerts/alerts.service';
-import {UserService} from '../../users/user.service';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-cart',

@@ -1,0 +1,65 @@
+
+<h4 *ngIf="loading">
+  <i class="fa fa-spinner fa-spin"></i> Chargement des lignes budgetaires ...
+</h4>
+
+<div *ngFor="let item of (budgetlines | async) | groupBy : 'team'"
+     [hidden]="loading || pagination.totalItems === 0">
+  <h5 class="page-header">Equipe {{ item.key }}</h5>
+  <table class="table table-condensed table-bordered table-striped w-100">
+    <thead class="table-dark bg-gradient-color5">
+    <tr>
+      <th class="align-middle p-2">Budget</th>
+      <th class="align-middle p-2">Commande</th>
+      <th class="align-middle p-2">Date</th>
+      <th class="align-middle p-2">Nature</th>
+      <th class="align-middle p-2">Tutelle</th>
+      <th class="align-middle p-2">Fournisseur</th>
+      <th class="align-middle p-2">Désignation</th>
+      <th class="align-middle p-2">Crédit</th>
+      <th class="align-middle p-2">Débit</th>
+      <th class="align-middle p-2">Quantité</th>
+      <th class="align-middle p-2"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let budgetline of item.value">
+
+      <td class="align-middle p-1">{{ budgetline.budget }}</td>
+      <td class="align-middle p-1">{{ budgetline.number }}</td>
+      <td class="align-middle p-1">{{ budgetline.date|date:"d/M/y" }}</td>
+      <td class="align-middle p-1">{{ budgetline.nature ? budgetline.nature : 'Toutes'}}</td>
+      <td class="align-middle p-1">{{ budgetline.budget_type }}</td>
+      <td class="align-middle p-1">{{ budgetline.provider }}</td>
+      <td class="align-middle p-1">{{ budgetline.product }}</td>
+      <td class="align-middle p-1">{{ budgetline.credit }}</td>
+      <td class="align-middle p-1">{{ budgetline.debit }}</td>
+      <td class="align-middle p-1">{{ budgetline.quantity }}</td>
+      <td class="align-middle p-1">
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary btn-sm">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button type="button" class="btn btn-danger btn-sm">
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <nav [hidden]="loading || (pagination.nextPage === null && pagination.prevPage === null)">
+    <pagination class="pagination-sm justify-content-center"
+                previousText="&lsaquo;" nextText="&rsaquo;"
+                firstText="&laquo;" lastText="&raquo;"
+                [itemsPerPage]="pagination.itemsPerPage"
+                [totalItems]="pagination.totalItems"
+                [(ngModel)]="pagination.currentPage"
+                (pageChanged)="pageChanged($event)"
+                [maxSize]="9"
+                [boundaryLinks]="true"
+    ></pagination>
+  </nav>
+
+</div>

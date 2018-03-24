@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Observable} from "rxjs/Observable";
-import {UserModel} from "./user.model";
+import {UserModel} from "../users/user.model";
 import {environment} from "../../environments/environment";
 import {of} from "rxjs/observable/of";
 
@@ -19,7 +19,8 @@ export class UserService {
       return this.users;
     });
   }
-  hasPermission(user: UserModel, permission: string): boolean {
+  hasPermission(permission: string): boolean {
+    const currentUser = localStorage.getItem('currentUser');
     return true;
   }
 }

@@ -27,19 +27,21 @@ import {TeamsComponent} from './teams/teams.component';
 
 import {AlertService} from './alerts/alerts.service';
 import {ProviderService} from './providers/provider.service';
-import {ProductService} from './products/product.service';
+import {ProductService} from './services/product.service';
 import {OrderService} from './orders/order.service';
-import {UserService} from './users/user.service';
-import {TeamsService} from './teams/teams.service';
+import {UserService} from './services/user.service';
+import {TeamsService} from './services/teams.service';
 import { LoginComponent } from './auth/login.component';
-import {AuthService} from './auth/auth.service';
+import {AuthService} from './services/auth.service';
 import {AuthGuard} from './auth/auth.guard';
-import { HomeComponent } from './home/home.component';
+import {HomeComponent} from './home/home.component';
 import {TokenInterceptor} from './auth/token.interceptor';
-import { OrderListComponent } from './orders/order-list/order-list.component';
-import {BudgetService} from './budgets/budgets.service';
-import { BugetlinesComponent } from './bugetlines/bugetlines.component';
-import { BudgetFilterFormComponent } from './budget-filter-form/budget-filter-form.component';
+import {OrderListComponent} from './orders/order-list/order-list.component';
+import {BudgetListComponent} from './budget-list/budget-list.component';
+import {BudgetDetailComponent} from './budget-detail/budget-detail.component';
+import {BudgetService} from './services/budgets.service';
+import {GroupByPipe} from './pipes/group-by.pipe';
+import {BudgetFilterFormComponent} from './budget-filter-form/budget-filter-form.component';
 
 
 @NgModule({
@@ -55,14 +57,16 @@ import { BudgetFilterFormComponent } from './budget-filter-form/budget-filter-fo
     CartComponent,
     ValidationComponent,
     OrderFilterPipe,
+    GroupByPipe,
     OrderItemComponent,
     OrderDetailComponent,
     TeamsComponent,
     LoginComponent,
     HomeComponent,
     OrderListComponent,
-    BugetlinesComponent,
-    BudgetFilterFormComponent
+    BudgetFilterFormComponent,
+    BudgetListComponent,
+    BudgetDetailComponent,
   ],
   entryComponents: [ProviderFormComponent],
   imports: [

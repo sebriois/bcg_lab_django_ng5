@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs/Observable";
-import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {TeamModel} from "./teams.model";
-import {environment} from "../../environments/environment";
+import {Observable} from 'rxjs/Observable';
+import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {environment} from '../../environments/environment';
+import {TeamModel} from '../teams/teams.model';
 
 @Injectable()
 export class TeamsService {

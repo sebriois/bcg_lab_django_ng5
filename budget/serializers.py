@@ -6,6 +6,7 @@ from budget.models import Budget, BudgetLine
 class BudgetLineSerializer(serializers.ModelSerializer):
     credit = serializers.FloatField()
     debit = serializers.FloatField()
+    budget_type = serializers.SerializerMethodField()
 
     class Meta:
         model = BudgetLine
@@ -25,6 +26,9 @@ class BudgetLineSerializer(serializers.ModelSerializer):
             'debit',
             'confidential',
         )
+
+    def get_budget_type(self,obj):
+        return obj.get_budget_type_display()
 
 
 class BudgetSerializer(serializers.ModelSerializer):

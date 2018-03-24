@@ -11,6 +11,8 @@ import {LoginComponent} from "./auth/login.component";
 import {HomeComponent} from "./home/home.component";
 import {OrderListComponent} from "./orders/order-list/order-list.component";
 import {BudgetsComponent} from './budgets/budgets.component';
+import {BudgetLinesComponent} from './budgetlines/budgetlines.component';
+import {BudgetListComponent} from './budget-list/budget-list.component';
 
 const routes: Routes = [
   {
@@ -36,7 +38,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'budgets',
+    path: 'budget',
     component: BudgetsComponent,
     data: {
       'title': 'Budgets'
