@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">
+    Quantité à ajouter au panier
+  </h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="quantityForm" (ngSubmit)="addToCart()">
+      <div class="form-group">
+        <label for="quantity" *ngIf="product"><b>{{ product.provider }}</b> {{ product.name }}</label>
+        <input type="number" name="quantity" id="quantity" class="form-control" formControlName="quantity" placeholder="quantité">
+      </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="quantityForm.pristine || quantityForm.invalid || loading">
+      <span *ngIf="!loading"><i class="fa fa-cart-plus"></i> Ajouter au panier</span>
+      <span *ngIf="loading"><i class="fa fa-spinner fa-spin"></i> ajout en cours...</span>
+    </button>
+
+    <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">
+      <i class="fa fa-close"></i> Annuler</button>
+  </form>
+</div>
