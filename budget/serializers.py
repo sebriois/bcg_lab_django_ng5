@@ -31,6 +31,21 @@ class BudgetLineSerializer(serializers.ModelSerializer):
         return obj.get_budget_type_display()
 
 
+class SimpleBudgetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Budget
+        fields = (
+            'team',
+            'name',
+            'default_origin',
+            'budget_type',
+            'default_nature',
+            'tva_code',
+            'domain',
+            'is_active',
+        )
+
+
 class BudgetSerializer(serializers.ModelSerializer):
     team = serializers.StringRelatedField(read_only = True)
     budget_type = serializers.SerializerMethodField()

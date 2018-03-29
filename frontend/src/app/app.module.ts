@@ -8,8 +8,9 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
-
+import {ToastrModule} from "ngx-toastr";
 import {AppRoutingModule} from './app-routing.module';
+
 import {AppComponent} from './app.component';
 import {ProvidersComponent} from './providers/providers.component';
 import {OrdersComponent} from './orders/orders.component';
@@ -24,25 +25,34 @@ import {CartComponent} from './orders/cart/cart.component';
 import {ValidationComponent} from './orders/validation/validation.component';
 import {ProviderFormComponent} from './provider-form/provider-form.component';
 import {TeamsComponent} from './teams/teams.component';
-
-import {AlertService} from './alerts/alerts.service';
-import {ProviderService} from './providers/provider.service';
-import {ProductService} from './services/product.service';
-import {OrderService} from './orders/order.service';
-import {UserService} from './services/user.service';
-import {TeamsService} from './services/teams.service';
-import { LoginComponent } from './auth/login.component';
-import {AuthService} from './services/auth.service';
-import {AuthGuard} from './auth/auth.guard';
+import {LoginComponent} from './auth/login.component';
 import {HomeComponent} from './home/home.component';
-import {TokenInterceptor} from './auth/token.interceptor';
 import {OrderListComponent} from './orders/order-list/order-list.component';
 import {BudgetListComponent} from './budget-list/budget-list.component';
 import {BudgetDetailComponent} from './budget-detail/budget-detail.component';
-import {BudgetService} from './services/budgets.service';
-import {GroupByPipe} from './pipes/group-by.pipe';
 import {BudgetFilterFormComponent} from './budget-filter-form/budget-filter-form.component';
+import { ProductQuantityFormComponent } from './product-quantity-form/product-quantity-form.component';
 
+import {OutageService} from "./services/outage.service";
+import {AlertService} from './alerts/alerts.service';
+import {ProviderService} from './services/provider.service';
+import {ProductService} from './services/product.service';
+import {OrderService} from './services/order.service';
+import {UserService} from './services/user.service';
+import {TeamsService} from './services/teams.service';
+import {AuthService} from './services/auth.service';
+import {BudgetService} from './services/budgets.service';
+
+import {AuthGuard} from './auth/auth.guard';
+import {TokenInterceptor} from './auth/token.interceptor';
+import {GroupByPipe} from './pipes/group-by.pipe';
+
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { OutageComponent } from './outage/outage.component';
+import { MenuComponent } from './menu/menu.component';
+
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -67,14 +77,21 @@ import {BudgetFilterFormComponent} from './budget-filter-form/budget-filter-form
     BudgetFilterFormComponent,
     BudgetListComponent,
     BudgetDetailComponent,
+    ProductQuantityFormComponent,
+    OutageComponent,
+    MenuComponent,
   ],
-  entryComponents: [ProviderFormComponent],
+  entryComponents: [
+    ProviderFormComponent,
+    ProductQuantityFormComponent
+  ],
   imports: [
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     PaginationModule.forRoot(),
     TooltipModule.forRoot(),
+    ToastrModule.forRoot(),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
@@ -83,6 +100,7 @@ import {BudgetFilterFormComponent} from './budget-filter-form/budget-filter-form
     HttpClientModule,
   ],
   providers: [
+    OutageService,
     AuthService,
     AuthGuard,
     AlertService,

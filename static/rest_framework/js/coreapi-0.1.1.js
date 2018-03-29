@@ -1646,7 +1646,7 @@ module.exports = function lolcation(loc) {
     return value
   }
 
-  // Build a destructive iterator for the value list
+  // Build a destructive iterator for the value order-list
   function iteratorFor(items) {
     var iterator = {
       next: function() {

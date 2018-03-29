@@ -20,7 +20,7 @@ export class OrderModel {
 }
 
 export class OrderItemModel {
-  item_type: string;
+  item_type_display: string;
   username: string;
   username_recept: string;
   product_id: string;
@@ -33,7 +33,7 @@ export class OrderItemModel {
   sub_category: string;
   nomenclature: string;
   price: number;
-  cost_type: string;
+  cost_type_display: string;
   quantity: number;
   delivered: string;
   is_confidential: boolean;

@@ -94,7 +94,12 @@
 
       <div class="btn-group">
         <button class="btn btn-success btn-sm" [disabled]="!isValid" (click)="nextStatus()">
-          <i class="fa fa-check"></i> Commander
+          <span *ngIf="movingToNextStatus">
+            <i class="fa fa-spinner fa-spin"></i> en cours ...
+          </span>
+          <span *ngIf="!movingToNextStatus">
+            <i class="fa fa-check"></i> Commander
+          </span>
         </button>
         <button class="btn btn-danger btn-sm mr-2">
           <i class="fa fa-trash"></i> Supprimer

@@ -1297,7 +1297,7 @@ XRegExp = XRegExp || (function (undef) {
         return name.replace(/[- _]+/g, "").toLowerCase();
     }
 
-// Expands a list of Unicode code points and ranges to be usable in a regex character class
+// Expands a order-list of Unicode code points and ranges to be usable in a regex character class
     function expand(str) {
         return str.replace(/\w{4}/g, "\\u$&");
     }
@@ -1320,7 +1320,7 @@ XRegExp = XRegExp || (function (undef) {
         return parseInt(dec, 10).toString(16);
     }
 
-// Inverts a list of Unicode code points and ranges
+// Inverts a order-list of Unicode code points and ranges
     function invert(range) {
         var output = [],
             lastEnd = -1,
@@ -1356,7 +1356,7 @@ XRegExp = XRegExp || (function (undef) {
     XRegExp.install("extensibility");
 
 /**
- * Adds to the list of Unicode properties that XRegExp regexes can match via \p{..} or \P{..}.
+ * Adds to the order-list of Unicode properties that XRegExp regexes can match via \p{..} or \P{..}.
  * @memberOf XRegExp
  * @param {Object} pack Named sets of Unicode code points and ranges.
  * @param {Object} [aliases] Aliases for the primary token names.

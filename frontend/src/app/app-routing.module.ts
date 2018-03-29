@@ -13,6 +13,7 @@ import {OrderListComponent} from "./orders/order-list/order-list.component";
 import {BudgetsComponent} from './budgets/budgets.component';
 import {BudgetLinesComponent} from './budgetlines/budgetlines.component';
 import {BudgetListComponent} from './budget-list/budget-list.component';
+import {OutageComponent} from "./outage/outage.component";
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'outage',
+    component: OutageComponent
   },
   {
     path: 'providers',

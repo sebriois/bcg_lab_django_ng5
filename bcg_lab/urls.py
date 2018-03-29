@@ -21,6 +21,7 @@ from django.views.generic import TemplateView, RedirectView
 from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh_jwt_token
 
+from bcg_lab.routers import CustomRouter
 from provider import views as provider_views
 from product import views as product_views
 from order import views as order_views
@@ -30,14 +31,17 @@ from bcg_lab import user_views
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'users', user_views.UserViewSet)
-router.register(r'teams', team_views.TeamViewSet)
-router.register(r'providers', provider_views.ProviderViewSet)
-router.register(r'resellers', provider_views.ResellerViewSet)
-router.register(r'products', product_views.ProductViewSet)
-router.register(r'orders', order_views.OrderViewSet)
-router.register(r'budgets', budget_views.BudgetViewSet)
-router.register(r'budgetlines', budget_views.BudgetLineViewSet)
+router.register(r'api/users', user_views.UserViewSet)
+router.register(r'api/teams', team_views.TeamViewSet)
+router.register(r'api/providers', provider_views.ProviderViewSet)
+router.register(r'api/resellers', provider_views.ResellerViewSet)
+router.register(r'api/products', product_views.ProductViewSet)
+router.register(r'api/cart', order_views.CartViewSet)
+router.register(r'api/budgets', budget_views.BudgetViewSet)
+router.register(r'api/budgetlines', budget_views.BudgetLineViewSet)
+
+custom_router = CustomRouter()
+router.register(r'api/orders', order_views.OrderViewSet)
 
 # The API URLs are now determined automatically by the router.
 # Additionally, we include the login URLs for the browsable API.
@@ -50,5 +54,8 @@ urlpatterns = [
     re_path('^(?!/?static/)(?!/?media/)(?P<path>.*\..*)$', RedirectView.as_view(url='/static/%(path)s', permanent=False)),
     path('', TemplateView.as_view(template_name="%s/index.html" % (settings.DEBUG and 'src' or 'dist'))),
 ]
+
+urlpatterns += router.urls
+urlpatterns += custom_router.urls
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

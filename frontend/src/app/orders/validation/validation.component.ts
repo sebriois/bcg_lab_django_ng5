@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {OrderService} from '../order.service';
-import {OrderModel} from '../orders.model';
+import {OrderService} from '../../services/order.service';
+import {OrderModel} from '../../models/orders.model';
 import {Observable} from 'rxjs/Observable';
 import {AlertService} from '../../alerts/alerts.service';
 

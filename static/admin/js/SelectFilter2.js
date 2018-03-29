@@ -50,7 +50,7 @@ Requires jQuery, core.js, and SelectBox.js.
                 'class', 'help help-tooltip help-icon',
                 'title', interpolate(
                     gettext(
-                        'This is the list of available %s. You may choose some by ' +
+                        'This is the order-list of available %s. You may choose some by ' +
                         'selecting them in the box below and then clicking the ' +
                         '"Choose" arrow between the two boxes.'
                     ),
@@ -66,7 +66,7 @@ Requires jQuery, core.js, and SelectBox.js.
             quickElement(
                 'span', search_filter_label, '',
                 'class', 'help-tooltip search-label-icon',
-                'title', interpolate(gettext("Type into this box to filter down the list of available %s."), [field_name])
+                'title', interpolate(gettext("Type into this box to filter down the order-list of available %s."), [field_name])
             );
 
             filter_p.appendChild(document.createTextNode(' '));
@@ -95,7 +95,7 @@ Requires jQuery, core.js, and SelectBox.js.
                 'class', 'help help-tooltip help-icon',
                 'title', interpolate(
                     gettext(
-                        'This is the list of chosen %s. You may remove some by ' +
+                        'This is the order-list of chosen %s. You may remove some by ' +
                         'selecting them in the box below and then clicking the ' +
                         '"Remove" arrow between the two boxes.'
                     ),

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AlertService} from '../alerts/alerts.service';
-import {OrderService} from './order.service';
+import {OrderService} from '../services/order.service';
 import {AuthService} from "../services/auth.service";
 import {UserModel} from '../users/user.model';
 

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable} from "rxjs/Observable";
-import {OrderService} from "../order.service";
+import {OrderService} from "../../services/order.service";
 import {AlertService} from "../../alerts/alerts.service";
-import {OrderModel} from "../orders.model";
+import {OrderModel} from "../../models/orders.model";
 
 @Component({
   selector: 'app-list',

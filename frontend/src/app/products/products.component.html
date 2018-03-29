@@ -1,104 +1,102 @@
-<div class="container-fluid h-100">
-<div class="row h-100">
-  <div class="col pt-5">
-
-    <app-alerts></app-alerts>
-
-    <div class="page-header text-color4">
-        <h3>
-            <i class="fa fa-flask"></i> Gestion des produits <small>{{ pagination.totalItems }}</small>
-        </h3>
-    </div>
-    <h4 [hidden]="!loading"><i class="fa fa-spinner fa-spin"></i> Loading ...</h4>
-
-    <div class="input-group w-25">
-      <input type="text" class="form-control" placeholder="Fournisseur, produit, référence, ..." [(ngModel)]="searchText">
-      <span class="input-group-btn">
-        <button class="btn btn-primary"
-                tooltip="Recherche rapide"
-                placement="top"
-                (click)="searchProducts()"
-        >
-          <i class="fa fa-search"></i>
-        </button>
-      </span>
-      <span class="input-group-btn">
-        <button class="btn btn-primary"
-                tooltip="Recherche avancée"
-                placement="top"
-                (click)="openAdvancedSearchForm()">
-          <i class="fa fa-ellipsis-h"></i>
-        </button>
-      </span>
-    </div>
-
-    <nav [hidden]="loading">
-      <pagination class="pagination-sm justify-content-center"
-                  previousText="&lsaquo;" nextText="&rsaquo;"
-                  firstText="&laquo;" lastText="&raquo;"
-                  [itemsPerPage]="pagination.itemsPerPage"
-                  [totalItems]="pagination.totalItems"
-                  [(ngModel)]="pagination.currentPage"
-                  (pageChanged)="getPage($event)"
-                  [maxSize]="9"
-                  [boundaryLinks]="true"
-      ></pagination>
-    </nav>
-
-    <table class="table table-condensed table-bordered table-striped w-100" [hidden]="loading">
-      <thead class="table-dark bg-gradient-color5">
-        <tr>
-            <th class="align-middle">Fournisseur</th>
-            <th class="align-middle">Produit</th>
-            <th class="align-middle">Conditionnement</th>
-            <th class="align-middle">Référence</th>
-            <th class="align-middle">Prix</th>
-            <th class="align-middle">Offre</th>
-            <th class="align-middle">Expiration</th>
-            <th class="align-middle">Nomenclature</th>
-            <th class="align-middle">MAJ</th>
-            <th class="align-middle"></th>
-        </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let product of products | async">
-        <td class="align-middle p-1">{{ product.provider }}</td>
-        <td class="align-middle p-1">{{ product.name }}</td>
-        <td class="align-middle p-1">{{ product.packaging }}</td>
-        <td class="align-middle p-1">{{ product.reference }}</td>
-        <td class="align-middle p-1">{{ product.price }}&nbsp;€</td>
-        <td class="align-middle p-1">{{ product.offer_nb }}</td>
-        <td class="align-middle p-1">{{ product.expiry|date }}</td>
-        <td class="align-middle p-1">{{ product.nomenclature }}</td>
-        <td class="align-middle p-1">{{ product.last_change|date }}</td>
-        <td class="align-middle p-1">
-          <div class="btn-group btn-sm">
-            <button class="btn btn-success btn-sm">
-              <i class="fa fa-cart-plus"></i>
-            </button>
-            <button class="btn btn-primary btn-sm">
-              <i class="fa fa-edit"></i>
-            </button>
-            <button class="btn btn-danger btn-sm">
-              <i class="fa fa-trash"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
-    <nav [hidden]="loading">
-      <pagination class="pagination-sm justify-content-center"
-                  previousText="&lsaquo;" nextText="&rsaquo;"
-                  [itemsPerPage]="pagination.itemsPerPage"
-                  [totalItems]="pagination.totalItems"
-                  [(ngModel)]="pagination.currentPage"
-                  (pageChanged)="getPage($event)"
-                  [maxSize]="5"
-                  [boundaryLinks]="false"
-      ></pagination>
-    </nav>
+<app-menu></app-menu>
+<div class="container-fluid">
+  <div class="page-header">
+    <h3 class="text-color4">
+      <i class="fa fa-flask"></i> Gestion des produits
+      <small>{{ pagination.totalItems }}</small>
+    </h3>
   </div>
-</div>
+
+  <app-alerts></app-alerts>
+
+  <h4 [hidden]="!loading"><i class="fa fa-spinner fa-spin"></i> Loading ...</h4>
+
+  <div class="input-group w-25">
+    <input type="text" class="form-control" placeholder="Fournisseur, produit, référence, ..." [(ngModel)]="searchText">
+    <span class="input-group-btn">
+    <button class="btn btn-primary"
+            tooltip="Recherche rapide"
+            placement="top"
+            (click)="searchProducts()"
+    >
+      <i class="fa fa-search"></i>
+    </button>
+  </span>
+    <span class="input-group-btn">
+    <button class="btn btn-primary"
+            tooltip="Recherche avancée"
+            placement="top"
+            (click)="openAdvancedSearchForm()">
+      <i class="fa fa-ellipsis-h"></i>
+    </button>
+  </span>
+  </div>
+
+  <nav [hidden]="loading">
+    <pagination class="pagination-sm justify-content-center"
+                previousText="&lsaquo;" nextText="&rsaquo;"
+                firstText="&laquo;" lastText="&raquo;"
+                [itemsPerPage]="pagination.itemsPerPage"
+                [totalItems]="pagination.totalItems"
+                [(ngModel)]="pagination.currentPage"
+                (pageChanged)="getPage($event)"
+                [maxSize]="9"
+                [boundaryLinks]="true"
+    ></pagination>
+  </nav>
+
+  <table class="table table-condensed table-bordered table-striped w-100" [hidden]="loading">
+    <thead class="table-dark bg-gradient-color5">
+    <tr>
+      <th class="align-middle">Fournisseur</th>
+      <th class="align-middle">Produit</th>
+      <th class="align-middle">Conditionnement</th>
+      <th class="align-middle">Référence</th>
+      <th class="align-middle">Prix</th>
+      <th class="align-middle">Offre</th>
+      <th class="align-middle">Expiration</th>
+      <th class="align-middle">Nomenclature</th>
+      <th class="align-middle">MAJ</th>
+      <th class="align-middle"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let product of products | async">
+      <td class="align-middle p-1">{{ product.provider }}</td>
+      <td class="align-middle p-1">{{ product.name }}</td>
+      <td class="align-middle p-1">{{ product.packaging }}</td>
+      <td class="align-middle p-1">{{ product.reference }}</td>
+      <td class="align-middle p-1">{{ product.price }}&nbsp;€</td>
+      <td class="align-middle p-1">{{ product.offer_nb }}</td>
+      <td class="align-middle p-1">{{ product.expiry|date }}</td>
+      <td class="align-middle p-1">{{ product.nomenclature }}</td>
+      <td class="align-middle p-1">{{ product.last_change|date }}</td>
+      <td class="align-middle p-1">
+        <div class="btn-group btn-sm">
+          <button class="btn btn-success btn-sm" (click)="showQuantityForm(product)">
+            <i class="fa fa-cart-plus"></i>
+          </button>
+          <button class="btn btn-primary btn-sm">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button class="btn btn-danger btn-sm">
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <nav [hidden]="loading">
+    <pagination class="pagination-sm justify-content-center"
+                previousText="&lsaquo;" nextText="&rsaquo;"
+                [itemsPerPage]="pagination.itemsPerPage"
+                [totalItems]="pagination.totalItems"
+                [(ngModel)]="pagination.currentPage"
+                (pageChanged)="getPage($event)"
+                [maxSize]="5"
+                [boundaryLinks]="false"
+    ></pagination>
+  </nav>
 </div>

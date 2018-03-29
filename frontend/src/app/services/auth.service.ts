@@ -6,7 +6,7 @@ import {UserService} from './user.service';
 import {UserModel} from '../users/user.model';
 import 'rxjs/add/observable/of';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {ProductModel} from '../products/products.model';
+import {ProductModel} from '../models/products.model';
 
 @Injectable()
 export class AuthService {

@@ -1,7 +1,7 @@
 import {Component, OnInit, OnChanges} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ProviderModel, ResellerModel} from '../providers/providers.model';
-import {ProviderService} from '../providers/provider.service';
+import {ProviderModel, ResellerModel} from '../models/providers.model';
+import {ProviderService} from '../services/provider.service';
 import {AlertService} from '../alerts/alerts.service';
 import {BsModalRef} from "ngx-bootstrap/modal/bs-modal-ref.service";
 

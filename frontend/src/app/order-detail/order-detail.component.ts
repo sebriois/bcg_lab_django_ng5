@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {OrderItemModel, OrderModel} from '../orders/orders.model';
+import {OrderItemModel, OrderModel} from '../models/orders.model';
+import {OrderService} from "../services/order.service";
 
 @Component({
   selector: 'app-order-detail',
@@ -9,8 +10,11 @@ import {OrderItemModel, OrderModel} from '../orders/orders.model';
 export class OrderDetailComponent implements OnInit {
   @Input() order: OrderModel;
   private isValid: boolean;
+  public movingToNextStatus = false;
 
-  constructor() { }
+  constructor(
+    private orderService: OrderService
+  ) { }
 
   ngOnInit() {
   }
@@ -30,7 +34,10 @@ export class OrderDetailComponent implements OnInit {
     return false;
   }
   nextStatus(): void {
-    console.log('next status');
+    this.movingToNextStatus = true;
+    this.orderService.nextStatus(this.order).subscribe(response => {
+      this.movingToNextStatus = false;
+    });
   }
   toggleUrgent() {
     this.order.is_urgent = !this.order.is_urgent;
