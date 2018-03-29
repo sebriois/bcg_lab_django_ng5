@@ -1,8 +1,8 @@
-<div class="container-fluid pt-4">
+<app-menu></app-menu>
+<div class="container-fluid">
 <h3 class="text-color4 page-header">
   <i class="fa fa-check"></i> En cours de validation <small>{{ (orders | async).length }}</small>
 </h3>
-
 <app-alerts></app-alerts>
 
 <h3 [hidden]="!loading">

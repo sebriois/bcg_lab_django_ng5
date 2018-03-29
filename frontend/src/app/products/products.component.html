@@ -10,26 +10,20 @@
   <app-alerts></app-alerts>
 
   <h4 [hidden]="!loading"><i class="fa fa-spinner fa-spin"></i> Loading ...</h4>
-
-  <div class="input-group w-25">
-    <input type="text" class="form-control" placeholder="Fournisseur, produit, référence, ..." [(ngModel)]="searchText">
-    <span class="input-group-btn">
-    <button class="btn btn-primary"
-            tooltip="Recherche rapide"
-            placement="top"
-            (click)="searchProducts()"
-    >
-      <i class="fa fa-search"></i>
-    </button>
-  </span>
-    <span class="input-group-btn">
-    <button class="btn btn-primary"
-            tooltip="Recherche avancée"
-            placement="top"
-            (click)="openAdvancedSearchForm()">
-      <i class="fa fa-ellipsis-h"></i>
-    </button>
-  </span>
+  <div class="row">
+    <div class="input-group col-md-4">
+      <input type="text" class="form-control" placeholder="Fournisseur, produit, référence, ..." [(ngModel)]="searchText">
+      <span class="input-group-btn">
+        <button class="btn btn-primary" tooltip="Recherche rapide" placement="top" (click)="searchProducts()">
+          <i class="fa fa-search"></i>
+        </button>
+      </span>
+      <span class="input-group-btn">
+        <button class="btn btn-primary" tooltip="Recherche avancée" placement="top" (click)="openAdvancedSearchForm()">
+          <i class="fa fa-ellipsis-h"></i>
+        </button>
+      </span>
+    </div>
   </div>
 
   <nav [hidden]="loading">
