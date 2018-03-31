@@ -1,0 +1,2 @@
+class BcgLabException(BaseException):
+    pass

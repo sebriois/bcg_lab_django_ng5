@@ -31,7 +31,7 @@ import {OrderListComponent} from './orders/order-list/order-list.component';
 import {BudgetListComponent} from './budget-list/budget-list.component';
 import {BudgetDetailComponent} from './budget-detail/budget-detail.component';
 import {BudgetFilterFormComponent} from './budget-filter-form/budget-filter-form.component';
-import { ProductQuantityFormComponent } from './product-quantity-form/product-quantity-form.component';
+import {ProductQuantityFormComponent} from './product-quantity-form/product-quantity-form.component';
 
 import {OutageService} from "./services/outage.service";
 import {AlertService} from './alerts/alerts.service';

@@ -1,3 +1,6 @@
+import datetime
+import json
+
 from django.db.models import Q
 from rest_framework import viewsets, generics, status, mixins
 from rest_framework.decorators import detail_route
@@ -5,6 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from bcg_lab.constants import DEBIT
+from bcg_lab.exceptions import BcgLabException
+from budget.models import Budget
 from order.models import Order
 from order.serializers import OrderSerializer
 from product.models import Product
@@ -127,11 +132,50 @@ class OrderViewSet(viewsets.ModelViewSet):
         Move order to its next status
         """
         order = self.get_object()
-        print(order)
 
-        serializer = self.get_serializer(instance = order)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status = status.HTTP_200_OK)
+        info, warn, error = [], [], []
+
+        user = request.user
+
+        if order.status == 0:
+            order._move_to_status_1(user, info, warn, error)
+
+        elif order.status == 1 and user.has_perm('order.custom_validate'):
+            if user.has_perm('team.custom_view_teams') or order.team.members.filter(user = user).count() > 0:
+                if not order.provider.is_local:
+                    budget_id = request.GET.get("budget", None)
+                    if budget_id:
+                        try:
+                            order.budget = Budget.objects.get(id = budget_id)
+                        except Budget.DoesNotExist:
+                            pass
+
+                order._move_to_status_2(user, info, warn, error)
+            else:
+                error.append("Vous ne disposez pas des permissions nécessaires pour valider cette commande")
+
+        elif order.status == 2 and user.has_perm('order.custom_goto_status_3'):
+            order._move_to_status_3(user, info, warn, error)
+
+        elif order.status == 3 and user.has_perm('order.custom_goto_status_4'):
+            order._move_to_status_4(user, info, warn, error)
+
+        elif order.status == 4:
+            delivery_date = request.GET.get('delivery_date', None)
+            order._move_to_status_5(delivery_date, info, warn, error)
+
+        else:
+            error.append("Vous ne disposez pas des permissions nécessaires pour modifier le statut de cette commande")
+
+        if not error:
+            info.append("Nouveau statut: '%s'." % order.get_status_display())
+
+        data = {
+            'info': info,
+            'warn': warn,
+            'error': error
+        }
+        return Response(json.dumps(data), status = status.HTTP_200_OK)
 
     def cart(self):
         orders = Order.objects.filter(status = 0)
@@ -207,16 +251,3 @@ class OrderViewSet(viewsets.ModelViewSet):
             Q(items__username = self.request.user.username) |
             Q(team__in = self.request.user.teammember_set.only('team_id').values_list('team_id', flat = True))
         )
-
-        # Exclude confidential orders
-        if not user.has_perm('budget.custom_view_budget'):
-            order_list = order_list.filter(
-                Q(items__is_confidential = False) |
-                Q(items__username = user.username)
-            )
-
-        order_ids.update([order.id for order in order_list.only('id')])
-        return Order.objects.filter(id__in = order_ids)
-
-
-

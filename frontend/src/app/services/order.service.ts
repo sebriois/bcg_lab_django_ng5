@@ -6,11 +6,15 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
 import {OrderModel} from '../models/orders.model';
 import {ProductModel} from "../models/products.model";
+import {ToastrService} from "ngx-toastr";
 
 
 @Injectable()
 export class OrderService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private toastr: ToastrService,
+  ) {}
 
   private baseUrl: string = environment.apiUrl;
   private _orders: Array<OrderModel> = [];
@@ -34,8 +38,16 @@ export class OrderService {
   }
 
   nextStatus(order: OrderModel): Observable<any> {
-    return this.http.get<OrderModel>(this.baseUrl + '/orders/' + order.id + '/next_status/').map(updatedOrder => {
-      return updatedOrder;
+    return this.http.get<any>(this.baseUrl + '/orders/' + order.id + '/next_status/').map(messages => {
+      if (messages.hasOwnProperty('error')) {
+        messages.error.map(msg => this.toastr.error(msg));
+      }
+      if (messages.hasOwnProperty('warn')) {
+        messages.warn.map(msg => this.toastr.warning(msg));
+      }
+      if (messages.hasOwnProperty('info')) {
+        messages.info.map(msg => this.toastr.info(msg));
+      }
     });
   }
 

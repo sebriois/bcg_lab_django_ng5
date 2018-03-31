@@ -1,16 +1,22 @@
 # -*- encoding: utf8 -*-
 from datetime import datetime
 
+from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
+from django.core.mail import send_mail
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from django.db.models import Q
+from django.template import loader
+from django.urls import reverse
 from django.utils import timezone
 
 from bcg_lab.constants import STATE_CHOICES, DEBIT, COST_TYPE_CHOICES, CREDIT, ORDERITEM_TYPES
+from bcg_lab.exceptions import BcgLabException
 from product.models import Product
 from provider.models import Provider
 from budget.models import Budget, BudgetLine
-from team.models import Team
+from team.models import Team, TeamMember
 from attachments.models import Attachment
 
 
@@ -39,6 +45,160 @@ class Order(models.Model):
     def __str__(self):
         d = datetime.strftime(self.date_created, "%d/%m/%Y %Hh%M")
         return u"%s (%s) - %s" % (self.provider, self.team, d)
+
+    def _move_to_status_1(self, user, info, warn, error):
+        missing_nomenclature = self.items.filter(
+            item_type = 0
+        ).filter(
+            Q(nomenclature__isnull = True) |
+            Q(nomenclature = '')
+        )
+        if missing_nomenclature.count() > 0:
+            for item in missing_nomenclature:
+                error.append("Veuillez saisir une nomenclature pour l'item '%s' de la commande %s en cliquant sur "
+                          "le bouton 'modifier' de la ligne correspondante." % (item.name, self.provider.name))
+            return
+
+        self.status = 1
+        self.save()
+
+        if not settings.DEBUG:
+            emails = set()
+            for member in self.team.members.all():
+                user = member.user
+                if user.has_perm('order.custom_validate') and not user.is_superuser and user.email:
+                    emails.add(user.email)
+
+            if emails:
+                subject = "[BCG-Lab %s] Validation d'une commande (%s)" % (settings.SITE_NAME, self.get_full_name())
+                template = loader.get_template('order/validation_email.txt')
+                context = {
+                    'order': self,
+                    'url': reverse('order:tab_validation')
+                }
+                message = template.render(context)
+                for email in emails:
+                    try:
+                        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
+                    except:
+                        continue
+            else:
+                warn.append("Aucun email de validation n'a pu être envoyé puisqu'aucun validateur n'a renseigné d'adresse email.")
+
+    def _move_to_status_2(self, user, info, warn, error):
+        if self.provider.is_local:
+            self.status = 4
+            self.save()
+
+            for item in self.items.all():
+                item.delivered = item.quantity
+                item.save()
+
+            if not settings.DEBUG:
+                subject = "[BCG-Lab %s] Nouvelle commande magasin" % settings.SITE_NAME
+                template = loader.get_template('email_local_provider.txt')
+                url = reverse('order:tab_reception_local_provider')
+                message = template.render({'order': self, 'url': url})
+                emails = Group.objects.filter(
+                    permissions__codename = "custom_view_local_provider"
+                ).values_list(
+                    "user__email", flat = True
+                )
+
+                for email in emails:
+                    try:
+                        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
+                    except:
+                        continue
+
+                info.append("Un email a été envoyé au magasin pour la livraison de la commande.")
+        else:
+            if self.budget and BudgetLine.objects.filter(order_id = self.id).count() == 0:
+                self.create_budget_line()
+
+            self.status = 2
+            self.save()
+
+            if not settings.DEBUG:
+                usernames = set()
+                for item in self.items.all():
+                    if item.username:
+                        usernames.add(item.username)
+
+                members = TeamMember.objects.filter(
+                    user__username__in = usernames,
+                    send_on_validation = True,
+                    user__email__isnull = False
+                ).exclude(
+                    user__email = ''
+                )
+                for tm in members:
+                    subject = u"[BCG-Lab %s] Votre commande %s a été validée" % (settings.SITE_NAME, self.provider.name)
+                    template = loader.get_template("email_order_detail.txt")
+                    message = template.render({'order': self})
+                    try:
+                        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [tm.user.email])
+                    except:
+                        continue
+
+    def _move_to_status_3(self, user, info, warn, error):
+        if not self.budget:
+            error.append("Veuillez choisir un budget à imputer")
+            return
+
+        self.status = 3
+        self.save()
+
+        if BudgetLine.objects.filter(order_id = self.id).count() == 0:
+            self.create_budget_line()
+
+    def _move_to_status_4(self, user, info, warn, error):
+        if not self.number:
+            if not self.budget:
+                msg = "Veuillez sélectionner un budget."
+            else:
+                if self.budget.budget_type == 0:  # ie. CNRS
+                    msg = "Commande CNRS, veuillez saisir le numéro de commande SILAB."
+                else:
+                    msg = "Commande UPS, veuillez saisir le numéro de commande SIFAC."
+
+            error.append(msg)
+            return
+
+        self.status = 4
+        self.is_urgent = False
+        self.save()
+
+        for item in self.items.all():
+            item.delivered = item.quantity
+            item.save()
+
+        if not settings.DEBUG:
+            # Prepare emails to be sent
+            usernames = list(set(self.items.values_list("username", flat = True)))
+            for tm in TeamMember.objects.filter(user__username__in = usernames, send_on_sent = True,
+                                                user__email__isnull = False):
+                subject = u"[BCG-Lab %s] Votre commande %s a été envoyée" % (settings.SITE_NAME, self.provider.name)
+                template = loader.get_template("email_order_detail.txt")
+                message = template.render({'order': self})
+                try:
+                    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [tm.user.email])
+                except:
+                    continue
+
+    def _move_to_status_5(self, delivery_date, info, warn, error):
+        if not delivery_date:
+            error.append("Veuillez saisir une date de réception")
+        else:
+            try:
+                delivery_date = datetime.strptime(delivery_date, "%d/%m/%Y").astimezone()
+                if delivery_date < self.date_created:
+                    error.append(u"Veuillez saisir une date de livraison supérieure à la date de création de la commande.")
+            except:
+                error.append(u"Veuillez saisir une date valide (format jj/mm/aaaa).")
+
+        if not error:
+            self.save_to_history(delivery_date)
 
     def copy(self):
         return Order.objects.create(
@@ -124,7 +284,6 @@ class Order(models.Model):
         # Move order's items to the new history object
         for item in self.items.all():
             history.items.add(item)
-        self.items.clear()
 
 
 class OrderItem(models.Model):
